@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SimpleUdp</name>
+    </assembly>
+    <members>
+        <member name="T:SimpleUdp.Common">
+            <summary>
+            Commonly used static methods for SimpleUdp.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.Common.ParseIpPort(System.String,System.String@,System.Int32@)">
+            <summary>
+            Parse an IP:port string to its parts.
+            </summary>
+            <param name="ipPort">IP:port.</param>
+            <param name="ip">IP address.</param>
+            <param name="port">Port number.</param>
+        </member>
+        <member name="T:SimpleUdp.Datagram">
+            <summary>
+            Datagram received by this endpoint.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.Datagram.Ip">
+            <summary>
+            IP address of the remote endpoint.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.Datagram.Port">
+            <summary>
+            Port number of the remote endpoint.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.Datagram.Data">
+            <summary>
+            Data received from the remote endpoint.
+            </summary>
+        </member>
+        <member name="T:SimpleUdp.EndpointMetadata">
+            <summary>
+            Remote endpoint metadata.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.EndpointMetadata.Ip">
+            <summary>
+            IP address of the remote endpoint.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.EndpointMetadata.Port">
+            <summary>
+            Port number of the remote endpoint.
+            </summary>
+        </member>
+        <member name="T:SimpleUdp.UdpEndpoint">
+            <summary>
+            UDP endpoint, both client and server.
+            </summary>
+        </member>
+        <member name="E:SimpleUdp.UdpEndpoint.EndpointDetected">
+            <summary>
+            Event to fire when a new endpoint is detected.
+            </summary>
+        </member>
+        <member name="E:SimpleUdp.UdpEndpoint.DatagramReceived">
+            <summary>
+            Event to fire when a datagram is received.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.UdpEndpoint.Endpoints">
+            <summary>
+            Retrieve a list of (up to) the 100 most recently seen endpoints.
+            </summary>
+        </member>
+        <member name="P:SimpleUdp.UdpEndpoint.MaxDatagramSize">
+            <summary>
+            Maximum datagram size, must be greater than zero and less than or equal to 65507.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
+            <summary>
+            Instantiate the UDP endpoint.
+            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+            </summary>
+            <param name="ip">Local IP address.</param>
+            <param name="port">Local port number.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.StartServer">
+            <summary>
+            Start the server to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.String)">
+            <summary>
+            Send a datagram to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="text">Text to send.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Send a datagram to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.String)">
+            <summary>
+            Send a datagram asynchronously to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="text">Text to send.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Send a datagram asynchronously to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param>
+        </member>
+    </members>
+</doc>

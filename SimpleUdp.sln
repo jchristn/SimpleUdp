@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleUdp", "UdpTest\SimpleUdp.csproj", "{13B36B6B-6B6A-430E-A631-B75A8C87AB22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleUdp", "SimpleUdp\SimpleUdp.csproj", "{13B36B6B-6B6A-430E-A631-B75A8C87AB22}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Node", "Node\Node.csproj", "{C75CD2A7-FCBB-48A5-B0FC-98A06CA8B6CB}"
 EndProject

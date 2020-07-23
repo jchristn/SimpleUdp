@@ -1,18 +1,19 @@
 {
   "format": 1,
   "restore": {
-    "C:\\code\\misc\\UdpTest\\Node\\Node.csproj": {}
+    "C:\\code\\misc\\SimpleUdp\\Node\\Node.csproj": {}
   },
   "projects": {
-    "C:\\code\\misc\\UdpTest\\Node\\Node.csproj": {
+    "C:\\code\\misc\\SimpleUdp\\Node\\Node.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\code\\misc\\UdpTest\\Node\\Node.csproj",
+        "projectUniqueName": "C:\\code\\misc\\SimpleUdp\\Node\\Node.csproj",
         "projectName": "Node",
-        "projectPath": "C:\\code\\misc\\UdpTest\\Node\\Node.csproj",
+        "projectPath": "C:\\code\\misc\\SimpleUdp\\Node\\Node.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\code\\misc\\UdpTest\\Node\\obj\\",
+        "outputPath": "C:\\code\\misc\\SimpleUdp\\Node\\obj\\",
         "projectStyle": "PackageReference",
+        "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -23,6 +24,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
+          "net461",
           "netcoreapp3.1"
         ],
         "sources": {
@@ -34,8 +36,15 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "C:\\code\\misc\\UdpTest\\UdpTest\\SimpleUdp.csproj": {
-                "projectPath": "C:\\code\\misc\\UdpTest\\UdpTest\\SimpleUdp.csproj"
+              "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+              }
+            }
+          },
+          "net461": {
+            "projectReferences": {
+              "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
               }
             }
           }
@@ -64,18 +73,27 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        },
+        "net461": {
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
         }
       }
     },
-    "C:\\code\\misc\\UdpTest\\UdpTest\\SimpleUdp.csproj": {
+    "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\code\\misc\\UdpTest\\UdpTest\\SimpleUdp.csproj",
+        "projectUniqueName": "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
         "projectName": "SimpleUdp",
-        "projectPath": "C:\\code\\misc\\UdpTest\\UdpTest\\SimpleUdp.csproj",
+        "projectPath": "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\code\\misc\\UdpTest\\UdpTest\\obj\\",
+        "outputPath": "C:\\code\\misc\\SimpleUdp\\SimpleUdp\\obj\\",
         "projectStyle": "PackageReference",
+        "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -86,7 +104,8 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net461",
+          "netstandard2.0"
         ],
         "sources": {
           "C:\\NuGet": {},
@@ -95,7 +114,10 @@
           "https://nuget.pkg.github.com/jchristn/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
+          "net461": {
+            "projectReferences": {}
+          },
+          "netstandard2.0": {
             "projectReferences": {}
           }
         },
@@ -106,11 +128,26 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
+        "net461": {
           "dependencies": {
             "Caching.dll": {
               "target": "Package",
               "version": "[1.3.4, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        },
+        "netstandard2.0": {
+          "dependencies": {
+            "Caching.dll": {
+              "target": "Package",
+              "version": "[1.3.4, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
             }
           },
           "imports": [
@@ -123,11 +160,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
         }
       }

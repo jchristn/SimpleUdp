@@ -1,7 +1,0 @@
-C:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\SimpleUdp.AssemblyInfoInputs.cache
-C:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\SimpleUdp.AssemblyInfo.cs
-C:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\SimpleUdp.deps.json
-C:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\SimpleUdp.dll
-C:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\SimpleUdp.pdb
-C:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\SimpleUdp.dll
-C:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\SimpleUdp.pdb

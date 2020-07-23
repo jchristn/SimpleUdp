@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <ApplicationIcon />
+    <StartupObject />
+    <Authors>Joel Christner</Authors>
+    <Description>SimpleUdp is a super simple way of building UDP clients and servers in C#.</Description>
+    <Copyright>(c)2020 Joel Christner</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/jchristn/SimpleUdp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
+    <RepositoryType>Github</RepositoryType>
+    <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\code\misc\SimpleUdp\SimpleUdp\SimpleUdp.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Caching.dll" Version="1.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,8 +1,0 @@
-c:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\UdpTest.deps.json
-c:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\UdpTest.dll
-c:\code\misc\UdpTest\UdpTest\bin\Debug\netcoreapp3.1\UdpTest.pdb
-c:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\UdpTest.csprojAssemblyReference.cache
-c:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\UdpTest.AssemblyInfoInputs.cache
-c:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\UdpTest.AssemblyInfo.cs
-c:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\UdpTest.dll
-c:\code\misc\UdpTest\UdpTest\obj\Debug\netcoreapp3.1\UdpTest.pdb

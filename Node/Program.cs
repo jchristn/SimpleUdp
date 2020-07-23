@@ -7,18 +7,35 @@ namespace Node
 {
     class Program
     {
+        static string _Ip = null;
+        static int _Port = 0;
         static UdpEndpoint _UdpEndpoint;
 
         static void Main(string[] args)
         {
-            _UdpEndpoint = new UdpEndpoint("127.0.0.1", Convert.ToInt32(args[0]));
+            /*
+             * 
+             * 
+             * Usage:
+             *    node 127.0.0.1 8000
+             * 
+             * Starts the endpoint on IP address 127.0.0.1 port 8000.
+             *
+             * 
+             * 
+             */
+
+            _Ip = args[0];
+            _Port = Convert.ToInt32(args[1]);
+
+            _UdpEndpoint = new UdpEndpoint(_Ip, _Port);
             _UdpEndpoint.EndpointDetected += EndpointDetected;
             _UdpEndpoint.DatagramReceived += DatagramReceived;
             _UdpEndpoint.StartServer();
             
             while (true)
             {
-                Console.Write("Command [? for help]: ");
+                Console.Write("[" + _Ip + ":" + _Port + " Command/? for help]: ");
                 string userInput = Console.ReadLine();
                 if (String.IsNullOrEmpty(userInput)) continue;
 
@@ -78,6 +95,7 @@ namespace Node
             Console.WriteLine("127.0.0.1:8001 hello world!");
             Console.WriteLine("");
         }
+
         static void EndpointDetected(object sender, EndpointMetadata md)
         {
             Console.WriteLine("Endpoint detected: " + md.Ip + ":" + md.Port);
