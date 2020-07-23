@@ -1,0 +1,16 @@
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.exe
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.deps.json
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.json
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.runtimeconfig.dev.json
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.dll
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Server.pdb
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\UdpTest.dll
+c:\Code\Misc\UdpTest\Server\bin\Debug\netcoreapp3.1\UdpTest.pdb
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.csprojAssemblyReference.cache
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfoInputs.cache
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.AssemblyInfo.cs
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.csproj.CopyComplete
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.dll
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.pdb
+c:\Code\Misc\UdpTest\Server\obj\Debug\netcoreapp3.1\Server.genruntimeconfig.cache
+C:\code\misc\UdpTest\Server\bin\Debug\netcoreapp3.1\Caching.dll
