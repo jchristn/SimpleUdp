@@ -22,13 +22,16 @@ I have you covered.
 
 - WatsonTcp - easiest way to build TCP-based applications with built-in framing 
   - Github: https://github.com/jchristn/watsontcp
-  - NuGet: https://www.nuget.org/packages/WatsonTcp/ [![NuGet Version](https://img.shields.io/nuget/v/WatsonTcp.svg?style=flat)](https://www.nuget.org/packages/WatsonTcp/)
+  - NuGet: https://www.nuget.org/packages/WatsonTcp/ 
+  - [![NuGet Version](https://img.shields.io/nuget/v/WatsonTcp.svg?style=flat)](https://www.nuget.org/packages/WatsonTcp/)
 - SimpleTcp - lightweight TCP wrapper without framing
   - Github: https://github.com/jchristn/simpletcp
-  - NuGet: https://www.nuget.org/packages/SuperSimpleTcp/ [![NuGet Version](https://img.shields.io/nuget/v/SuperSimpleTcp.svg?style=flat)](https://www.nuget.org/packages/SuperSimpleTcp/)
+  - NuGet: https://www.nuget.org/packages/SuperSimpleTcp/ 
+  - [![NuGet Version](https://img.shields.io/nuget/v/SuperSimpleTcp.svg?style=flat)](https://www.nuget.org/packages/SuperSimpleTcp/)
 - CavemanTcp - TCP wrapper exposing controls for sending and receiving data to build state machines
   - Github: https://github.com/jchristn/cavemantcp
-  - NuGet: https://www.nuget.org/packages/CavemanTcp/ [![NuGet Version](https://img.shields.io/nuget/v/CavemanTcp.svg?style=flat)](https://www.nuget.org/packages/CavemanTcp/)
+  - NuGet: https://www.nuget.org/packages/CavemanTcp/ 
+  - [![NuGet Version](https://img.shields.io/nuget/v/CavemanTcp.svg?style=flat)](https://www.nuget.org/packages/CavemanTcp/)
   
 Don't know what to use?  Just ask!  File an issue, I'll be happy to help.
 
