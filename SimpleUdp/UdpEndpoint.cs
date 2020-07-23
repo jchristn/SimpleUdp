@@ -225,12 +225,11 @@ namespace SimpleUdp
         {
             _SendLock.Wait();
 
+            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
+
             try
-            {
-                _UdpClient.Dispose();
-                _UdpClient = new UdpClient(_Port);
-                _UdpClient.Connect(ip, port);
-                _UdpClient.Send(data, data.Length);
+            {  
+                _UdpClient.Send(data, data.Length, ipe);
             }
             finally
             {
@@ -242,12 +241,11 @@ namespace SimpleUdp
         {
             await _SendLock.WaitAsync();
 
+            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
+
             try
-            {
-                _UdpClient.Dispose();
-                _UdpClient = new UdpClient(_Port);
-                _UdpClient.Connect(ip, port);
-                await _UdpClient.SendAsync(data, data.Length);
+            { 
+                await _UdpClient.SendAsync(data, data.Length, ipe);
             }
             finally
             {
