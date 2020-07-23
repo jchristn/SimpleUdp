@@ -16,6 +16,18 @@ SimpleUdp provides simple methods for creating your own UDP-based sockets applic
 
 Need help or have feedback?  Please file an issue here!
 
+## Need TCP Instead?
+
+I have you covered.
+
+| Package | Description | Github | NuGet |
+|---|---|---|---|
+| WatsonTcp | easiest way to build TCP-based applications with built-in framing | https://github.com/jchristn/watsontcp | https://www.nuget.org/packages/WatsonTcp/ |
+| SimpleTcp | lightweight TCP wrapper without framing | https://github.com/jchristn/SimpleTcp | https://www.nuget.org/packages/SuperSimpleTcp |
+| CavemanTcp | TCP wrapper exposing controls for sending and receiving data to build state machines | https://github.com/jchristn/CavemanTcp | https://www.nuget.org/packages/CavemanTcp |
+
+Don't know what to use?  Just ask!  File an issue, I'll be happy to help.
+
 ## Simple Example
 
 Start a node.
