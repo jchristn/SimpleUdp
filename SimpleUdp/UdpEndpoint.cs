@@ -68,7 +68,7 @@ namespace SimpleUdp
 
         private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, false);
          
-        private SemaphoreSlim _SendLock = new SemaphoreSlim(1);
+        private SemaphoreSlim _SendLock = new SemaphoreSlim(1, 1);
 
         #endregion
 

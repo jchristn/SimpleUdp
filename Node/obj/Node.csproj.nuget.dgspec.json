@@ -28,8 +28,6 @@
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\NuGet": {},
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.pkg.github.com/jchristn/index.json": {}
         },
@@ -85,7 +83,7 @@
       }
     },
     "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-      "version": "1.0.0.1",
+      "version": "1.0.0.2",
       "restore": {
         "projectUniqueName": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
         "projectName": "SimpleUdp",
@@ -108,8 +106,6 @@
           "netstandard2.0"
         ],
         "sources": {
-          "C:\\NuGet": {},
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.pkg.github.com/jchristn/index.json": {}
         },
