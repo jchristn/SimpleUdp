@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj": {}
+    "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj": {}
   },
   "projects": {
-    "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj": {
+    "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+        "projectUniqueName": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
         "projectName": "Node",
-        "projectPath": "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+        "projectPath": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\Misc\\SimpleUdp\\Node\\obj\\",
+        "outputPath": "C:\\code\\Misc\\SimpleUdp\\Node\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
@@ -33,16 +33,18 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-                "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+              "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
               }
             }
           },
           "net461": {
+            "targetAlias": "net461",
             "projectReferences": {
-              "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-                "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+              "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
               }
             }
           }
@@ -55,6 +57,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -70,10 +73,11 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         },
         "net461": {
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "targetAlias": "net461",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -82,14 +86,14 @@
         }
       }
     },
-    "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-      "version": "1.0.0.2",
+    "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+      "version": "1.0.0.3",
       "restore": {
-        "projectUniqueName": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
+        "projectUniqueName": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
         "projectName": "SimpleUdp",
-        "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
+        "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\obj\\",
+        "outputPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
@@ -103,17 +107,39 @@
         ],
         "originalTargetFrameworks": [
           "net461",
-          "netstandard2.0"
+          "net5.0",
+          "netcoreapp3.0",
+          "netcoreapp3.1",
+          "netstandard2.0",
+          "netstandard2.1"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.pkg.github.com/jchristn/index.json": {}
         },
         "frameworks": {
+          "netcoreapp3.0": {
+            "targetAlias": "netcoreapp3.0",
+            "projectReferences": {}
+          },
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          },
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          },
           "net461": {
+            "targetAlias": "net461",
             "projectReferences": {}
           },
           "netstandard2.0": {
+            "targetAlias": "netstandard2.0",
+            "projectReferences": {}
+          },
+          "netstandard2.1": {
+            "targetAlias": "netstandard2.1",
             "projectReferences": {}
           }
         },
@@ -124,16 +150,107 @@
         }
       },
       "frameworks": {
-        "net461": {
+        "netcoreapp3.0": {
+          "targetAlias": "netcoreapp3.0",
           "dependencies": {
             "Caching.dll": {
               "target": "Package",
               "version": "[1.3.4, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        },
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Caching.dll": {
+              "target": "Package",
+              "version": "[1.3.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        },
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Caching.dll": {
+              "target": "Package",
+              "version": "[1.3.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        },
+        "net461": {
+          "targetAlias": "net461",
+          "dependencies": {
+            "Caching.dll": {
+              "target": "Package",
+              "version": "[1.3.4, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         },
         "netstandard2.0": {
+          "targetAlias": "netstandard2.0",
           "dependencies": {
             "Caching.dll": {
               "target": "Package",
@@ -156,7 +273,32 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        },
+        "netstandard2.1": {
+          "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "Caching.dll": {
+              "target": "Package",
+              "version": "[1.3.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
