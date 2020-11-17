@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.0;netcoreapp3.1;net461;net5.0</TargetFrameworks>
+    <Version>1.0.0.4</Version>
+    <OutputType>Library</OutputType>
     <ApplicationIcon />
     <StartupObject />
     <Authors>Joel Christner</Authors>
@@ -16,7 +17,6 @@
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.0.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

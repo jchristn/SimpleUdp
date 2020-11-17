@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj": {}
+    "C:\\code\\misc\\simpleudp\\Node\\Node.csproj": {}
   },
   "projects": {
-    "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj": {
+    "C:\\code\\misc\\simpleudp\\Node\\Node.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+        "projectUniqueName": "C:\\code\\misc\\simpleudp\\Node\\Node.csproj",
         "projectName": "Node",
-        "projectPath": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+        "projectPath": "C:\\code\\misc\\simpleudp\\Node\\Node.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\code\\Misc\\SimpleUdp\\Node\\obj\\",
+        "outputPath": "C:\\code\\misc\\simpleudp\\Node\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
@@ -25,6 +25,7 @@
         ],
         "originalTargetFrameworks": [
           "net461",
+          "net5.0",
           "netcoreapp3.1"
         ],
         "sources": {
@@ -35,16 +36,24 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-                "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+              "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj"
+              }
+            }
+          },
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj"
               }
             }
           },
           "net461": {
             "targetAlias": "net461",
             "projectReferences": {
-              "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-                "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+              "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj": {
+                "projectPath": "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj"
               }
             }
           }
@@ -75,6 +84,25 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         },
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        },
         "net461": {
           "targetAlias": "net461",
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
@@ -86,14 +114,14 @@
         }
       }
     },
-    "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-      "version": "1.0.0.3",
+    "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj": {
+      "version": "1.0.0.4",
       "restore": {
-        "projectUniqueName": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
+        "projectUniqueName": "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj",
         "projectName": "SimpleUdp",
-        "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj",
+        "projectPath": "C:\\code\\misc\\simpleudp\\SimpleUdp\\SimpleUdp.csproj",
         "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-        "outputPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\obj\\",
+        "outputPath": "C:\\code\\misc\\simpleudp\\SimpleUdp\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [

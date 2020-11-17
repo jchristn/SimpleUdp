@@ -198,7 +198,7 @@ namespace SimpleUdp
             if (String.IsNullOrEmpty(text)) throw new ArgumentNullException(nameof(text));
             byte[] data = Encoding.UTF8.GetBytes(text);
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            await SendInternalAsync(ip, port, data);
+            await SendInternalAsync(ip, port, data).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -207,14 +207,14 @@ namespace SimpleUdp
         /// </summary>
         /// <param name="ip">IP address.</param>
         /// <param name="port">Port.</param>
-        /// <param name="data">Bytes.</param>
+        /// <param name="data">Bytes.</param> 
         public async Task SendAsync(string ip, int port, byte[] data)
         {
             if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
             if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
             if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            await SendInternalAsync(ip, port, data);
+            await SendInternalAsync(ip, port, data).ConfigureAwait(false);
         }
 
         #endregion
@@ -245,7 +245,15 @@ namespace SimpleUdp
 
             try
             { 
-                await _UdpClient.SendAsync(data, data.Length, ipe);
+                await _UdpClient.SendAsync(data, data.Length, ipe).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException)
+            {
+
+            }
+            catch (OperationCanceledException)
+            {
+
             }
             finally
             {
