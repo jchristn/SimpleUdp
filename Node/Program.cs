@@ -13,6 +13,11 @@ namespace Node
 
         static void Main(string[] args)
         {
+            if (args == null || args.Length < 2)
+            {
+                Usage();
+                return;
+            }
             /*
              * 
              * 
@@ -80,6 +85,13 @@ namespace Node
             }
 
             Console.ReadLine();
+        }
+
+        static void Usage()
+        {
+            Console.WriteLine("Usage:");
+            Console.WriteLine("> node 127.0.0.1 8000");
+            Console.WriteLine("Starts the endpoint on IP address 127.0.0.1 port 8000");
         }
 
         static void Menu()
