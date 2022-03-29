@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netcoreapp3.1;net461;net5.0;net6.0</TargetFrameworks>
-    <Version>1.0.0.5</Version>
+    <Version>1.1.0</Version>
     <OutputType>Library</OutputType>
     <ApplicationIcon />
     <StartupObject />
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
-    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>Minor breaking changes</PackageReleaseNotes>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

@@ -53,6 +53,22 @@ namespace SimpleUdp
             }
         }
 
+        /// <summary>
+        /// Events.
+        /// </summary>
+        public SimpleUdpEvents Events
+        {
+            get
+            {
+                return _Events;
+            }
+            set
+            {
+                if (value == null) throw new ArgumentNullException(nameof(Events));
+                _Events = value;
+            }
+        }
+
         #endregion
 
         #region Private-Members
@@ -69,6 +85,8 @@ namespace SimpleUdp
         private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, false);
          
         private SemaphoreSlim _SendLock = new SemaphoreSlim(1, 1);
+
+        private SimpleUdpEvents _Events = new SimpleUdpEvents();
 
         #endregion
 
@@ -102,10 +120,6 @@ namespace SimpleUdp
             _Port = port;
             _IPAddress = IPAddress.Parse(_Ip); 
 
-            _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
-            _Socket.Bind(new IPEndPoint(_IPAddress, port));
-
             _UdpClient = new UdpClient(port);
         }
 
@@ -114,41 +128,64 @@ namespace SimpleUdp
         #region Public-Methods
 
         /// <summary>
-        /// Start the server to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
+        /// Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
         /// </summary>
-        public void StartServer()
+        public void Start()
         {
             State state = new State(_MaxDatagramSize);
 
+            _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
+            _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
+
+            _Events.HandleStarted(this);
+
             _Socket.BeginReceiveFrom(state.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback = (ar) =>
             {
-                State so = (State)ar.AsyncState;
-                _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
-                int bytes = _Socket.EndReceiveFrom(ar, ref _Endpoint);
-
-                string ipPort = _Endpoint.ToString();
-                string ip = null;
-                int port = 0;
-                Common.ParseIpPort(ipPort, out ip, out port);
-
-                if (!_RemoteSockets.Contains(ipPort))
+                try
                 {
-                    _RemoteSockets.AddReplace(ipPort, _Socket);
-                    EndpointDetected?.Invoke(this, new EndpointMetadata(ip, port));
-                }
+                    State so = (State)ar.AsyncState;
+                    _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
+                    int bytes = _Socket.EndReceiveFrom(ar, ref _Endpoint);
 
-                if (bytes == so.Buffer.Length)
-                {
-                    DatagramReceived?.Invoke(this, new Datagram(ip, port, so.Buffer));
-                }
-                else
-                {
-                    byte[] buffer = new byte[bytes];
-                    Buffer.BlockCopy(so.Buffer, 0, buffer, 0, bytes);
-                    DatagramReceived?.Invoke(this, new Datagram(ip, port, buffer));
-                }
+                    string ipPort = _Endpoint.ToString();
+                    string ip = null;
+                    int port = 0;
+                    Common.ParseIpPort(ipPort, out ip, out port);
 
-            }, state);
+                    if (!_RemoteSockets.Contains(ipPort))
+                    {
+                        _RemoteSockets.AddReplace(ipPort, _Socket);
+                        EndpointDetected?.Invoke(this, new EndpointMetadata(ip, port));
+                    }
+
+                    if (bytes == so.Buffer.Length)
+                    {
+                        DatagramReceived?.Invoke(this, new Datagram(ip, port, so.Buffer));
+                    }
+                    else
+                    {
+                        byte[] buffer = new byte[bytes];
+                        Buffer.BlockCopy(so.Buffer, 0, buffer, 0, bytes);
+                        DatagramReceived?.Invoke(this, new Datagram(ip, port, buffer));
+                    }
+                }
+                catch (Exception)
+                {
+                    _Events.HandleStopped(this);
+                }
+            }, state);            
+        }
+
+        /// <summary>
+        /// Stop the UDP listener.
+        /// </summary>
+        public void Stop()
+        {
+            if (_Socket != null)
+            {
+                _Socket.Close();
+            }
         }
 
         /// <summary>

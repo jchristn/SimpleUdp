@@ -36,7 +36,10 @@ namespace Node
             _UdpEndpoint = new UdpEndpoint(_Ip, _Port);
             _UdpEndpoint.EndpointDetected += EndpointDetected;
             _UdpEndpoint.DatagramReceived += DatagramReceived;
-            _UdpEndpoint.StartServer();
+            _UdpEndpoint.Events.Started += NodeStarted;
+            _UdpEndpoint.Events.Stopped += NodeStopped;
+
+            _UdpEndpoint.Start();
             
             while (true)
             {
@@ -68,6 +71,14 @@ namespace Node
                     {
                         Console.WriteLine("None");
                     }
+                }
+                else if (userInput.Equals("start"))
+                {
+                    _UdpEndpoint.Start();
+                }
+                else if (userInput.Equals("stop"))
+                {
+                    _UdpEndpoint.Stop();
                 }
                 else
                 {
@@ -102,6 +113,8 @@ namespace Node
             Console.WriteLine("  ?       help, this menu");
             Console.WriteLine("  cls     clear the screen");
             Console.WriteLine("  list    list recent endpoints");
+            Console.WriteLine("  start   start the endpoint");
+            Console.WriteLine("  stop    stop the endpoint");
             Console.WriteLine("");
             Console.WriteLine("To send a message, use the form 'ip:port message', i.e.");
             Console.WriteLine("127.0.0.1:8001 hello world!");
@@ -116,6 +129,16 @@ namespace Node
         static void DatagramReceived(object sender, Datagram dg)
         {
             Console.WriteLine("[" + dg.Ip + ":" + dg.Port + "]: " + Encoding.UTF8.GetString(dg.Data));
+        }
+
+        private static void NodeStarted(object sender, EventArgs e)
+        {
+            Console.WriteLine("*** Node started");
+        }
+
+        private static void NodeStopped(object sender, EventArgs e)
+        {
+            Console.WriteLine("*** Node stopped");
         }
     }
 }

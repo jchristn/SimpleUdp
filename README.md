@@ -8,9 +8,10 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
  
-## New in v1.0.0
+## New in v1.1.0
 
-- Initial release
+- ```Events.Started``` and ```Events.Stopped```
+- ```UdpEndpoint.Start``` and ```UdpEndpoint.Stop``` APIs
 
 ## Help or Feedback
 
@@ -46,7 +47,7 @@ udp.EndpointDetected += EndpointDetected;
 
 // only if you want to receive messages...
 udp.DatagramReceived += DatagramReceived;
-udp.StartServer();
+udp.Start();
 
 // send a message...
 udp.Send("127.0.0.1", 8001, "Hello to my friend listening on port 8001!");
@@ -60,6 +61,11 @@ static void DatagramReceived(object sender, Datagram dg)
 {
   Console.WriteLine("[" + dg.Ip + ":" + dg.Port + "]: " + Encoding.UTF8.GetString(dg.Data));
 } 
+```
+
+Stop a node.
+```
+udp.Stop();
 ```
 
 ## Or Use the Node Project

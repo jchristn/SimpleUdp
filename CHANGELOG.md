@@ -2,10 +2,13 @@
 
 ## Current Version
 
-v1.0.0
+v1.1.0
 
-- Initial release
+- ```Events.Started``` and ```Events.Stopped```
+- ```UdpEndpoint.Start``` and ```UdpEndpoint.Stop``` APIs
 
 ## Previous Versions
 
-Notes from previous versions will be moved here.
+v1.0.0
+
+- Initial release

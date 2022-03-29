@@ -52,6 +52,26 @@
             Port number of the remote endpoint.
             </summary>
         </member>
+        <member name="T:SimpleUdp.SimpleUdpEvents">
+            <summary>
+            Events.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpEvents.Started">
+            <summary>
+            The endpoint listener has started.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpEvents.Stopped">
+            <summary>
+            The endpoint listener has stopped.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.SimpleUdpEvents.#ctor">
+            <summary>
+            Instantiate.
+            </summary>
+        </member>
         <member name="T:SimpleUdp.UdpEndpoint">
             <summary>
             UDP endpoint, both client and server.
@@ -77,6 +97,11 @@
             Maximum datagram size, must be greater than zero and less than or equal to 65507.
             </summary>
         </member>
+        <member name="P:SimpleUdp.UdpEndpoint.Events">
+            <summary>
+            Events.
+            </summary>
+        </member>
         <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
             <summary>
             Instantiate the UDP endpoint.
@@ -85,9 +110,14 @@
             <param name="ip">Local IP address.</param>
             <param name="port">Local port number.</param>
         </member>
-        <member name="M:SimpleUdp.UdpEndpoint.StartServer">
+        <member name="M:SimpleUdp.UdpEndpoint.Start">
             <summary>
-            Start the server to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
+            Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.Stop">
+            <summary>
+            Stop the UDP listener.
             </summary>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.String)">
