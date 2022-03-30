@@ -23,7 +23,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
@@ -59,7 +59,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
@@ -98,7 +98,7 @@
           "lib/net45/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -137,7 +137,7 @@
           "lib/net45/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.6.1",
         "dependencies": {
@@ -173,7 +173,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
@@ -209,7 +209,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
@@ -245,7 +245,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -281,7 +281,7 @@
           "lib/netcoreapp2.0/_._": {}
         }
       },
-      "SimpleUdp/1.1.0": {
+      "SimpleUdp/1.1.0.1": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
@@ -386,7 +386,7 @@
         "version.txt"
       ]
     },
-    "SimpleUdp/1.1.0": {
+    "SimpleUdp/1.1.0.1": {
       "type": "project",
       "path": "../SimpleUdp/SimpleUdp.csproj",
       "msbuildProject": "../SimpleUdp/SimpleUdp.csproj"
@@ -394,16 +394,16 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
-      "SimpleUdp >= 1.1.0"
+      "SimpleUdp >= 1.1.0.1"
     ],
     ".NETFramework,Version=v4.6.1": [
-      "SimpleUdp >= 1.1.0"
+      "SimpleUdp >= 1.1.0.1"
     ],
     "net5.0": [
-      "SimpleUdp >= 1.1.0"
+      "SimpleUdp >= 1.1.0.1"
     ],
     "net6.0": [
-      "SimpleUdp >= 1.1.0"
+      "SimpleUdp >= 1.1.0.1"
     ]
   },
   "packageFolders": {
@@ -413,11 +413,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+      "projectUniqueName": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
       "projectName": "Node",
-      "projectPath": "C:\\Code\\Misc\\SimpleUdp\\Node\\Node.csproj",
+      "projectPath": "C:\\code\\Misc\\SimpleUdp\\Node\\Node.csproj",
       "packagesPath": "C:\\Users\\joelc\\.nuget\\packages\\",
-      "outputPath": "C:\\Code\\Misc\\SimpleUdp\\Node\\obj\\",
+      "outputPath": "C:\\code\\Misc\\SimpleUdp\\Node\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [
@@ -442,32 +442,32 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-              "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+            "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+              "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
             }
           }
         },
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-              "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+            "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+              "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
             }
           }
         },
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-              "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+            "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+              "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
             }
           }
         },
         "net461": {
           "targetAlias": "net461",
           "projectReferences": {
-            "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
-              "projectPath": "C:\\Code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
+            "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj": {
+              "projectPath": "C:\\code\\Misc\\SimpleUdp\\SimpleUdp\\SimpleUdp.csproj"
             }
           }
         }

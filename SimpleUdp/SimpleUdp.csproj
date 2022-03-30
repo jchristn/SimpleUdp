@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;netcoreapp3.1;net461;net5.0;net6.0</TargetFrameworks>
-    <Version>1.1.0</Version>
+    <Version>1.1.0.1</Version>
     <OutputType>Library</OutputType>
     <ApplicationIcon />
     <StartupObject />
     <Authors>Joel Christner</Authors>
     <Description>SimpleUdp is a super simple way of building UDP clients and servers in C#.</Description>
-    <Copyright>(c)2021 Joel Christner</Copyright>
+    <Copyright>(c)2022 Joel Christner</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/jchristn/SimpleUdp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>

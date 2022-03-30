@@ -120,7 +120,7 @@
             Stop the UDP listener.
             </summary>
         </member>
-        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.String)">
+        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.String,System.Int16)">
             <summary>
             Send a datagram to the specific IP address and UDP port.
             This will throw a SocketException if the report UDP port is unreachable.
@@ -128,8 +128,9 @@
             <param name="ip">IP address.</param>
             <param name="port">Port.</param>
             <param name="text">Text to send.</param>
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
-        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.Byte[])">
+        <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.Byte[],System.Int16)">
             <summary>
             Send a datagram to the specific IP address and UDP port.
             This will throw a SocketException if the report UDP port is unreachable.
@@ -137,8 +138,9 @@
             <param name="ip">IP address.</param>
             <param name="port">Port.</param>
             <param name="data">Bytes.</param>
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
-        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.String)">
+        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.String,System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
             This will throw a SocketException if the report UDP port is unreachable.
@@ -146,8 +148,9 @@
             <param name="ip">IP address.</param>
             <param name="port">Port.</param>
             <param name="text">Text to send.</param>
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
-        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.Byte[])">
+        <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.Byte[],System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
             This will throw a SocketException if the report UDP port is unreachable.
@@ -155,6 +158,7 @@
             <param name="ip">IP address.</param>
             <param name="port">Port.</param>
             <param name="data">Bytes.</param> 
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
     </members>
 </doc>
