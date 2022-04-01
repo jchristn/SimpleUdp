@@ -12,7 +12,7 @@ namespace SimpleUdp
     /// <summary>
     /// UDP endpoint, both client and server.
     /// </summary>
-    public class UdpEndpoint
+    public class UdpEndpoint : IDisposable
     {
         #region Public-Members
 
@@ -73,6 +73,7 @@ namespace SimpleUdp
 
         #region Private-Members
 
+        bool disposed;
         private string _Ip = null;
         private int _Port = 0;
         private IPAddress _IPAddress;
@@ -126,6 +127,25 @@ namespace SimpleUdp
         #endregion
 
         #region Public-Methods
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                _UdpClient?.Dispose();
+            }
+
+            disposed = true;
+        }
+
 
         /// <summary>
         /// Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
