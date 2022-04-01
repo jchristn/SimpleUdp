@@ -182,10 +182,9 @@ namespace SimpleUdp
         /// </summary>
         public void Stop()
         {
-            if (_Socket != null)
-            {
-                _Socket.Close();
-            }
+            _UdpClient?.Dispose();
+            _Socket?.Close();
+            _Socket?.Dispose();
         }
 
         /// <summary>
