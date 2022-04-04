@@ -73,7 +73,7 @@ namespace SimpleUdp
 
         #region Private-Members
 
-        bool disposed;
+        private bool _Disposed = false;
         private string _Ip = null;
         private int _Port = 0;
         private IPAddress _IPAddress;
@@ -128,22 +128,29 @@ namespace SimpleUdp
 
         #region Public-Methods
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        /// <param name="disposing">Disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed) return;
+            if (_Disposed) return;
 
             if (disposing)
             {
                 _UdpClient?.Dispose();
             }
 
-            disposed = true;
+            _Disposed = true;
         }
 
 

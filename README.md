@@ -8,14 +8,17 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
  
-## New in v1.1.0
+## New in v1.2.0
 
-- ```Events.Started``` and ```Events.Stopped```
-- ```UdpEndpoint.Start``` and ```UdpEndpoint.Stop``` APIs
+- ```IDisposable```, thank you @jholzer
 
 ## Help or Feedback
 
 Need help or have feedback?  Please file an issue here!
+
+## Special Thanks
+
+Thanks to community members that have helped improve this library!  @jholzer
 
 ## Need TCP Instead?
 

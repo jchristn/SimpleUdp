@@ -110,6 +110,17 @@
             <param name="ip">Local IP address.</param>
             <param name="port">Local port number.</param>
         </member>
+        <member name="M:SimpleUdp.UdpEndpoint.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Disposing.</param>
+        </member>
         <member name="M:SimpleUdp.UdpEndpoint.Start">
             <summary>
             Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
