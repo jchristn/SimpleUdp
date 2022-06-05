@@ -151,6 +151,16 @@
             <param name="data">Bytes.</param>
             <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendOffset(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Int16)">
+            <summary>
+            Send a datagram to the specific IP address and UDP port with specific offset and size.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param>
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        </member>
         <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.String,System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
@@ -164,6 +174,16 @@
         <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.Byte[],System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param> 
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendOffsetAsync(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Int16)">
+            <summary>
+            Send a datagram asynchronously to the specific IP address and UDP port with specific offset and size.
             This will throw a SocketException if the report UDP port is unreachable.
             </summary>
             <param name="ip">IP address.</param>
