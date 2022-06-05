@@ -83,7 +83,7 @@ namespace SimpleUdp
         private UdpClient _UdpClient = null;
         private AsyncCallback _ReceiveCallback = null;
 
-        private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, false);
+        private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, null, false);
          
         private SemaphoreSlim _SendLock = new SemaphoreSlim(1, 1);
 
