@@ -74,13 +74,11 @@ namespace SimpleUdp
         #region Private-Members
 
         private bool _Disposed = false;
-        private string _Ip = null;
-        private int _Port = 0;
-        private IPAddress _IPAddress;
-        private Socket _Socket = null;
+
+        private UdpClient _UdpClient;
+        private Socket _ServerSocket = null;
         private int _MaxDatagramSize = 65507;
         private EndPoint _Endpoint = new IPEndPoint(IPAddress.Any, 0);
-        private UdpClient _UdpClient = null;
         private AsyncCallback _ReceiveCallback = null;
 
         private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, null, false);
@@ -109,19 +107,31 @@ namespace SimpleUdp
 
         /// <summary>
         /// Instantiate the UDP endpoint.
-        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
         /// </summary>
-        /// <param name="ip">Local IP address.</param>
+        /// <param name="hostname">Local hostname.</param>
         /// <param name="port">Local port number.</param>
-        public UdpEndpoint(string ip, int port)
+        public UdpEndpoint(string hostname, int port = 0) : this(new UdpClient(hostname, port))
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port must be greater than or equal to zero and less than or equal to 65535.");
-            _Ip = ip;
-            _Port = port;
-            _IPAddress = IPAddress.Parse(_Ip); 
+        }
 
-            _UdpClient = new UdpClient(port);
+        /// <summary>
+        /// Instantiate the UDP endpoint.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+        /// </summary>
+        /// <param name="port">Local port number.</param>
+        public UdpEndpoint(int port = 0) : this(new UdpClient(port))
+        {
+        }
+
+        /// <summary>
+        /// Instantiate the UDP endpoint.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+        /// </summary>
+        public UdpEndpoint(UdpClient udpClient)
+        {
+            _UdpClient = udpClient;
+            _ServerSocket = _UdpClient.Client;
         }
 
         #endregion
@@ -144,13 +154,13 @@ namespace SimpleUdp
         protected virtual void Dispose(bool disposing)
         {
             if (_Disposed) return;
+            _Disposed = true;
 
             if (disposing)
             {
-                _UdpClient?.Dispose();
+                _ServerSocket.Dispose();
+                _UdpClient.Dispose();
             }
-
-            _Disposed = true;
         }
 
 
@@ -161,19 +171,16 @@ namespace SimpleUdp
         {
             State state = new State(_MaxDatagramSize);
 
-            _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
-            _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
-
+            _ServerSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
             _Events.HandleStarted(this);
 
-            _Socket.BeginReceiveFrom(state.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback = (ar) =>
+            _ServerSocket.BeginReceiveFrom(state.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback = (ar) =>
             {
                 try
                 {
                     State so = (State)ar.AsyncState;
-                    _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
-                    int bytes = _Socket.EndReceiveFrom(ar, ref _Endpoint);
+                    _ServerSocket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
+                    int bytes = _ServerSocket.EndReceiveFrom(ar, ref _Endpoint);
 
                     string ipPort = _Endpoint.ToString();
                     string ip = null;
@@ -182,7 +189,7 @@ namespace SimpleUdp
 
                     if (!_RemoteSockets.Contains(ipPort))
                     {
-                        _RemoteSockets.AddReplace(ipPort, _Socket);
+                        _RemoteSockets.AddReplace(ipPort, _ServerSocket);
                         EndpointDetected?.Invoke(this, new EndpointMetadata(ip, port));
                     }
 
@@ -209,10 +216,7 @@ namespace SimpleUdp
         /// </summary>
         public void Stop()
         {
-            if (_Socket != null)
-            {
-                _Socket.Close();
-            }
+            _ServerSocket.Close();
         }
 
         /// <summary>
