@@ -68,22 +68,22 @@ namespace SimpleUdp
                 _Events = value;
             }
         }
+        
+        public IPEndPoint LocalIPEndPoint => _Socket.LocalEndPoint as IPEndPoint;
+
+        public bool Disposed { get; private set; }
+        public bool Started { get; private set; }
 
         #endregion
 
         #region Private-Members
-
-        private bool _Disposed = false;
-        private string _Ip = null;
-        private int _Port = 0;
-        private IPAddress _IPAddress;
+        
         private Socket _Socket = null;
         private int _MaxDatagramSize = 65507;
         private EndPoint _Endpoint = new IPEndPoint(IPAddress.Any, 0);
-        private UdpClient _UdpClient = null;
         private AsyncCallback _ReceiveCallback = null;
 
-        private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, false);
+        private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1, null, false);
          
         private SemaphoreSlim _SendLock = new SemaphoreSlim(1, 1);
 
@@ -109,19 +109,39 @@ namespace SimpleUdp
 
         /// <summary>
         /// Instantiate the UDP endpoint.
-        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
         /// </summary>
-        /// <param name="ip">Local IP address.</param>
+        /// <param name="hostname">Local hostname.</param>
         /// <param name="port">Local port number.</param>
-        public UdpEndpoint(string ip, int port)
+        public UdpEndpoint(string hostname, int port = 0) : this(new UdpClient(hostname, port))
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port must be greater than or equal to zero and less than or equal to 65535.");
-            _Ip = ip;
-            _Port = port;
-            _IPAddress = IPAddress.Parse(_Ip); 
+        }
 
-            _UdpClient = new UdpClient(port);
+        /// <summary>
+        /// Instantiate the UDP endpoint.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+        /// </summary>
+        /// <param name="port">Local port number.</param>
+        public UdpEndpoint(int port = 0) : this(new UdpClient(port))
+        {
+        }
+
+        /// <summary>
+        /// Use existing Socket from UdpClient.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+        /// </summary>
+        public UdpEndpoint(UdpClient udpClient) : this(udpClient.Client)
+        {
+            _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
+        }
+
+        /// <summary>
+        /// Use existing Socket.
+        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+        /// </summary>
+        public UdpEndpoint(Socket socket)
+        {
+            _Socket = socket;
         }
 
         #endregion
@@ -143,28 +163,34 @@ namespace SimpleUdp
         /// <param name="disposing">Disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_Disposed) return;
+            if (Disposed) return;
 
             if (disposing)
             {
-                _UdpClient?.Dispose();
+                Disposed = true;
+                try
+                {
+                    _Socket.Dispose();
+                } finally
+                {
+                    Started = false;
+                }
             }
-
-            _Disposed = true;
         }
 
 
         /// <summary>
         /// Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
         /// </summary>
+        /// <exception cref="InvalidOperationException">Already started</exception>
         public void Start()
         {
+            if (Started) throw new InvalidOperationException("Already started");
+            Started = true;
+
             State state = new State(_MaxDatagramSize);
 
-            _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
-            _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
-
             _Events.HandleStarted(this);
 
             _Socket.BeginReceiveFrom(state.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback = (ar) =>
@@ -209,9 +235,12 @@ namespace SimpleUdp
         /// </summary>
         public void Stop()
         {
-            if (_Socket != null)
+            try
             {
                 _Socket.Close();
+            } finally
+            {
+                Started = false;
             }
         }
 
@@ -225,13 +254,8 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public void Send(string ip, int port, string text, short ttl = 64)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
-            if (String.IsNullOrEmpty(text)) throw new ArgumentNullException(nameof(text));
-            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
             byte[] data = Encoding.UTF8.GetBytes(text);
-            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            SendInternal(ip, port, data, ttl); 
+            SendInternal(ip, port, data, 0, data.Length, ttl); 
         }
 
         /// <summary>
@@ -244,12 +268,20 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public void Send(string ip, int port, byte[] data, short ttl = 64)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
-            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            SendInternal(ip, port, data, ttl);
+            SendInternal(ip, port, data, 0, data.Length, ttl);
+        }
+
+        /// <summary>
+        /// Send a datagram to the specific IP address and UDP port with specific offset and size.
+        /// This will throw a SocketException if the report UDP port is unreachable.
+        /// </summary>
+        /// <param name="ip">IP address.</param>
+        /// <param name="port">Port.</param>
+        /// <param name="data">Bytes.</param>
+        /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        public void SendOffset(string ip, int port, byte[] data, int offset, int size, short ttl = 64)
+        {
+            SendInternal(ip, port, data, offset, size, ttl);
         }
 
         /// <summary>
@@ -262,13 +294,8 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public async Task SendAsync(string ip, int port, string text, short ttl = 64)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
-            if (String.IsNullOrEmpty(text)) throw new ArgumentNullException(nameof(text));
             byte[] data = Encoding.UTF8.GetBytes(text);
-            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            await SendInternalAsync(ip, port, data, ttl).ConfigureAwait(false);
+            await SendInternalAsync(ip, port, data, 0, data.Length, ttl).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -281,28 +308,40 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public async Task SendAsync(string ip, int port, byte[] data, short ttl = 64)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
-            if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
-            if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
-            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            await SendInternalAsync(ip, port, data, ttl).ConfigureAwait(false);
+            await SendInternalAsync(ip, port, data, 0, data.Length, ttl).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Send a datagram asynchronously to the specific IP address and UDP port with specific offset and size.
+        /// This will throw a SocketException if the report UDP port is unreachable.
+        /// </summary>
+        /// <param name="ip">IP address.</param>
+        /// <param name="port">Port.</param>
+        /// <param name="data">Bytes.</param> 
+        /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        public async Task SendOffsetAsync(string ip, int port, byte[] data, int offset, int size, short ttl = 64)
+        {
+            await SendInternalAsync(ip, port, data, offset, size, ttl).ConfigureAwait(false);
         }
 
         #endregion
 
         #region Private-Methods
 
-        private void SendInternal(string ip, int port, byte[] data, short ttl)
+        private void SendInternal(string ip, int port, byte[] data, int offset, int size, short ttl)
         {
+            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
+            if (data == null || data.Length == 0) throw new ArgumentNullException(nameof(data));
+            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
+
             _SendLock.Wait();
 
             IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
 
             try
             {
-                _UdpClient.Ttl = ttl;
-                _UdpClient.Send(data, data.Length, ipe);
+                _Socket.Ttl = ttl;
+                _Socket.SendTo(data, offset, size, SocketFlags.None, ipe);
             }
             finally
             {
@@ -310,24 +349,26 @@ namespace SimpleUdp
             }
         }
 
-        private async Task SendInternalAsync(string ip, int port, byte[] data, short ttl)
+        private async Task SendInternalAsync(string ip, int port, byte[] data, int offset, int size, short ttl)
         {
+            if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
+            if (data == null || data.Length == 0) throw new ArgumentNullException(nameof(data));
+            if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
+
             await _SendLock.WaitAsync();
 
             IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
 
             try
             {
-                _UdpClient.Ttl = ttl;
-                await _UdpClient.SendAsync(data, data.Length, ipe).ConfigureAwait(false);
+                _Socket.Ttl = ttl;
+                await _Socket.SendToAsync(new ArraySegment<byte>(data, offset, size), SocketFlags.None, ipe).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
-
             }
             catch (OperationCanceledException)
             {
-
             }
             finally
             {

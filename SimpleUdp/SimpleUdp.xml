@@ -105,10 +105,29 @@
         <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
             <summary>
             Instantiate the UDP endpoint.
-            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
             </summary>
-            <param name="ip">Local IP address.</param>
+            <param name="hostname">Local hostname.</param>
             <param name="port">Local port number.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.Int32)">
+            <summary>
+            Instantiate the UDP endpoint.
+            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+            </summary>
+            <param name="port">Local port number.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.Net.Sockets.UdpClient)">
+            <summary>
+            Use existing Socket from UdpClient.
+            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.Net.Sockets.Socket)">
+            <summary>
+            Use existing Socket.
+            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'Start()'.
+            </summary>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Dispose">
             <summary>
@@ -125,6 +144,7 @@
             <summary>
             Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
             </summary>
+            <exception cref="T:System.InvalidOperationException">Already started</exception>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Stop">
             <summary>
@@ -151,6 +171,16 @@
             <param name="data">Bytes.</param>
             <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendOffset(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Int16)">
+            <summary>
+            Send a datagram to the specific IP address and UDP port with specific offset and size.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param>
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        </member>
         <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.String,System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
@@ -164,6 +194,16 @@
         <member name="M:SimpleUdp.UdpEndpoint.SendAsync(System.String,System.Int32,System.Byte[],System.Int16)">
             <summary>
             Send a datagram asynchronously to the specific IP address and UDP port.
+            This will throw a SocketException if the report UDP port is unreachable.
+            </summary>
+            <param name="ip">IP address.</param>
+            <param name="port">Port.</param>
+            <param name="data">Bytes.</param> 
+            <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        </member>
+        <member name="M:SimpleUdp.UdpEndpoint.SendOffsetAsync(System.String,System.Int32,System.Byte[],System.Int32,System.Int32,System.Int16)">
+            <summary>
+            Send a datagram asynchronously to the specific IP address and UDP port with specific offset and size.
             This will throw a SocketException if the report UDP port is unreachable.
             </summary>
             <param name="ip">IP address.</param>
