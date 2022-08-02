@@ -231,7 +231,7 @@ namespace SimpleUdp
             if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
             byte[] data = Encoding.UTF8.GetBytes(text);
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
-            SendInternal(ip, port, data, ttl); 
+            SendInternal(ip, port, data, data.Length, ttl); 
         }
 
         /// <summary>
@@ -244,12 +244,27 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public void Send(string ip, int port, byte[] data, short ttl = 64)
         {
+            Send(ip, port, data, data.Length, ttl);
+        }
+
+        /// <summary>
+        /// Send a datagram to the specific IP address and UDP port.
+        /// This will throw a SocketException if the report UDP port is unreachable.
+        /// </summary>
+        /// <param name="ip">IP address.</param>
+        /// <param name="port">Port.</param>
+        /// <param name="data">Bytes.</param>
+        /// <param name="bytes">The number of bytes in the data.</param>
+        /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        public void Send(string ip, int port, byte[] data, int bytes, short ttl = 64)
+        {
             if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
             if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
             if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
+            if (bytes <= 0 || bytes > data.Length) throw new ArgumentException($"{nameof(bytes)} is out of range; must be greater than zero and less than or equal to data length.");
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
             if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            SendInternal(ip, port, data, ttl);
+            SendInternal(ip, port, data, bytes, ttl);
         }
 
         /// <summary>
@@ -268,7 +283,7 @@ namespace SimpleUdp
             byte[] data = Encoding.UTF8.GetBytes(text);
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
             if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            await SendInternalAsync(ip, port, data, ttl).ConfigureAwait(false);
+            await SendInternalAsync(ip, port, data, data.Length, ttl).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -281,19 +296,34 @@ namespace SimpleUdp
         /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
         public async Task SendAsync(string ip, int port, byte[] data, short ttl = 64)
         {
+            await SendAsync(ip, port, data, data.Length, ttl).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Send a datagram asynchronously to the specific IP address and UDP port.
+        /// This will throw a SocketException if the report UDP port is unreachable.
+        /// </summary>
+        /// <param name="ip">IP address.</param>
+        /// <param name="port">Port.</param>
+        /// <param name="data">Bytes.</param> 
+        /// <param name="bytes">The number of bytes in the data.</param>
+        /// <param name="ttl">Time to live, the maximum number of routers the packet is allowed to traverse.  Minimum is 0, default is 64.</param>
+        public async Task SendAsync(string ip, int port, byte[] data, int bytes, short ttl = 64)
+        {
             if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
             if (port < 0 || port > 65535) throw new ArgumentException("Port is out of range; must be greater than or equal to zero and less than or equal to 65535.");
             if (data == null || data.Length < 1) throw new ArgumentNullException(nameof(data));
+            if (bytes <= 0 || bytes > data.Length) throw new ArgumentException($"{nameof(bytes)} is out of range; must be greater than zero and less than or equal to data length.");
             if (data.Length > _MaxDatagramSize) throw new ArgumentException("Data exceed maximum datagram size (" + data.Length + " data bytes, " + _MaxDatagramSize + " bytes).");
             if (ttl < 0) throw new ArgumentOutOfRangeException(nameof(ttl));
-            await SendInternalAsync(ip, port, data, ttl).ConfigureAwait(false);
+            await SendInternalAsync(ip, port, data, bytes, ttl).ConfigureAwait(false);
         }
 
         #endregion
 
         #region Private-Methods
 
-        private void SendInternal(string ip, int port, byte[] data, short ttl)
+        private void SendInternal(string ip, int port, byte[] data, int bytes, short ttl)
         {
             _SendLock.Wait();
 
@@ -302,7 +332,7 @@ namespace SimpleUdp
             try
             {
                 _UdpClient.Ttl = ttl;
-                _UdpClient.Send(data, data.Length, ipe);
+                _UdpClient.Send(data, bytes, ipe);
             }
             finally
             {
@@ -310,7 +340,7 @@ namespace SimpleUdp
             }
         }
 
-        private async Task SendInternalAsync(string ip, int port, byte[] data, short ttl)
+        private async Task SendInternalAsync(string ip, int port, byte[] data, int bytes, short ttl)
         {
             await _SendLock.WaitAsync();
 
@@ -319,7 +349,7 @@ namespace SimpleUdp
             try
             {
                 _UdpClient.Ttl = ttl;
-                await _UdpClient.SendAsync(data, data.Length, ipe).ConfigureAwait(false);
+                await _UdpClient.SendAsync(data, bytes, ipe).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
