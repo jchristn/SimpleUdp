@@ -105,9 +105,9 @@
         <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
             <summary>
             Instantiate the UDP endpoint.
-            If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+            <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
             </summary>
-            <param name="ip">Local IP address.</param>
+            <param name="ip">Local IP address.<para>If IP is set to null or empty then will create a broadcast endpoint</para></param>
             <param name="port">Local port number.</param>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Dispose">

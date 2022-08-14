@@ -109,21 +109,29 @@ namespace SimpleUdp
 
         /// <summary>
         /// Instantiate the UDP endpoint.
-        /// If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.
+        /// <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
         /// </summary>
-        /// <param name="ip">Local IP address.</param>
+        /// <param name="ip">Local IP address.<para>If IP is set to null or empty then will create a broadcast endpoint</para></param>
         /// <param name="port">Local port number.</param>
         public UdpEndpoint(string ip, int port)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
             if (port < 0 || port > 65535) throw new ArgumentException("Port must be greater than or equal to zero and less than or equal to 65535.");
-            _Ip = ip;
             _Port = port;
-            _IPAddress = IPAddress.Parse(_Ip); 
 
-            _UdpClient = new UdpClient(port);
+            if (String.IsNullOrEmpty(ip))
+            {
+                _Ip = null;
+                _UdpClient = new UdpClient();
+                _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _UdpClient.ExclusiveAddressUse = false;
+            }
+            else
+            {
+                _Ip = ip;
+                _IPAddress = IPAddress.Parse(_Ip);
+                _UdpClient = new UdpClient(port);
+            }
         }
-
         #endregion
 
         #region Public-Methods
@@ -163,7 +171,16 @@ namespace SimpleUdp
 
             _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
-            _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
+            
+            //to build a broadcast udpendpoint if ip is null
+            if(string.IsNullOrEmpty(_Ip))
+            {
+                _Socket.Bind(new IPEndPoint(IPAddress.Any, _Port));
+            }
+            else
+            {
+                _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
+            }
 
             _Events.HandleStarted(this);
 
