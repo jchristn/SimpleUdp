@@ -31,7 +31,7 @@ namespace SimpleUdp
 
         internal Datagram(string ip, int port, byte[] data)
         {
-            if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
+            //if (String.IsNullOrEmpty(ip)) throw new ArgumentNullException(nameof(ip));
             if (port < 0 || port > 65535) throw new ArgumentException("Port must be greater than or equal to zero and less than or equal to 65535.");
 
             Ip = ip;
