@@ -189,7 +189,6 @@ namespace SimpleUdp
                 try
                 {
                     State so = (State)ar.AsyncState;
-                    _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
                     int bytes = _Socket.EndReceiveFrom(ar, ref _Endpoint);
 
                     string ipPort = _Endpoint.ToString();
@@ -213,6 +212,7 @@ namespace SimpleUdp
                         Buffer.BlockCopy(so.Buffer, 0, buffer, 0, bytes);
                         DatagramReceived?.Invoke(this, new Datagram(ip, port, buffer));
                     }
+                    _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
                 }
                 catch (Exception)
                 {
