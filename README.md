@@ -8,9 +8,10 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
  
-## New in v1.2.1 (Bug Fixed)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+## New in v1.2.x
 
 - Support for broadcast endpoints (set IP to null), thank you @charleypeng
+- Resolve issue associated with rapid send operations, thank you @seatrix
 
 ## Help or Feedback
 
@@ -18,7 +19,7 @@ Need help or have feedback?  Please file an issue here!
 
 ## Special Thanks
 
-Thanks to community members that have helped improve this library!  @jholzer @charleypeng
+Thanks to community members that have helped improve this library!  @jholzer @charleypeng @seatrix
 
 ## Need TCP Instead?
 
