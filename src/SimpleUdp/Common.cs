@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleUdp
+﻿namespace SimpleUdp
 {
+    using System;
+
     /// <summary>
     /// Commonly used static methods for SimpleUdp.
     /// </summary>

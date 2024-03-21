@@ -8,10 +8,11 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
  
-## New in v1.2.x
+## New in v2.0.x
 
-- Support for broadcast endpoints (set IP to null), thank you @charleypeng
-- Resolve issue associated with rapid send operations, thank you @seatrix
+- Retarget to .NET 8.0
+- Removal of `Start`, `Stop` APIs, and, the started event
+- Better multi-platform compatibility (Windows, Mac OSX, Ubuntu)
 
 ## Help or Feedback
 
@@ -51,7 +52,6 @@ udp.EndpointDetected += EndpointDetected;
 
 // only if you want to receive messages...
 udp.DatagramReceived += DatagramReceived;
-udp.Start();
 
 // send a message...
 udp.Send("127.0.0.1", 8001, "Hello to my friend listening on port 8001!");
@@ -67,12 +67,7 @@ static void DatagramReceived(object sender, Datagram dg)
 } 
 ```
 
-Stop a node.
-```
-udp.Stop();
-```
-
-## Or Use the Node Project
+## The Node Project
 
 Start node 1.
 ```
@@ -104,15 +99,6 @@ Send message from node 2 to node 1.
 127.0.0.1:8000 hello back to you my friend!
 ```
  
-## Running under Mono
-
-.NET Core is the preferred environment for cross-platform deployment on Windows, Linux, and Mac.  For those that use Mono, SimpleUdp should work well in Mono environments.  It is recommended that you execute the containing EXE using --server and after using the Mono Ahead-of-Time Compiler (AOT).
-
-```
-mono --aot=nrgctx-trampolines=8096,nimt-trampolines=8096,ntrampolines=4048 --server myapp.exe
-mono --server myapp.exe
-```
-
 ## Version History
 
 Please refer to CHANGELOG.md.

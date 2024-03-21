@@ -37,6 +37,19 @@
             Data received from the remote endpoint.
             </summary>
         </member>
+        <member name="M:SimpleUdp.Datagram.#ctor">
+            <summary>
+            Instantiate.
+            </summary>
+        </member>
+        <member name="M:SimpleUdp.Datagram.#ctor(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Instantiate.
+            </summary>
+            <param name="ip">IP address of the remote endpoint.</param>
+            <param name="port">Port of the remote endpoint.</param>
+            <param name="data">Data.</param>
+        </member>
         <member name="T:SimpleUdp.EndpointMetadata">
             <summary>
             Remote endpoint metadata.
@@ -52,25 +65,17 @@
             Port number of the remote endpoint.
             </summary>
         </member>
-        <member name="T:SimpleUdp.SimpleUdpEvents">
-            <summary>
-            Events.
-            </summary>
-        </member>
-        <member name="F:SimpleUdp.SimpleUdpEvents.Started">
-            <summary>
-            The endpoint listener has started.
-            </summary>
-        </member>
-        <member name="F:SimpleUdp.SimpleUdpEvents.Stopped">
-            <summary>
-            The endpoint listener has stopped.
-            </summary>
-        </member>
-        <member name="M:SimpleUdp.SimpleUdpEvents.#ctor">
+        <member name="M:SimpleUdp.EndpointMetadata.#ctor">
             <summary>
             Instantiate.
             </summary>
+        </member>
+        <member name="M:SimpleUdp.EndpointMetadata.#ctor(System.String,System.Int32)">
+            <summary>
+            Instantiate.
+            </summary>
+            <param name="ip">IP address of the remote endpoint.</param>
+            <param name="port">Port of the remote endpoint.</param> 
         </member>
         <member name="T:SimpleUdp.UdpEndpoint">
             <summary>
@@ -87,6 +92,11 @@
             Event to fire when a datagram is received.
             </summary>
         </member>
+        <member name="E:SimpleUdp.UdpEndpoint.ServerStopped">
+            <summary>
+            Event to fire when the server is stopped.
+            </summary>
+        </member>
         <member name="P:SimpleUdp.UdpEndpoint.Endpoints">
             <summary>
             Retrieve a list of (up to) the 100 most recently seen endpoints.
@@ -97,17 +107,12 @@
             Maximum datagram size, must be greater than zero and less than or equal to 65507.
             </summary>
         </member>
-        <member name="P:SimpleUdp.UdpEndpoint.Events">
-            <summary>
-            Events.
-            </summary>
-        </member>
         <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
             <summary>
             Instantiate the UDP endpoint.
             <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
             </summary>
-            <param name="ip">Local IP address.<para>If IP is set to null or empty then will create a broadcast endpoint</para></param>
+            <param name="ip">Local IP address.  If null, a broadcast endpoint will be created.</param>
             <param name="port">Local port number.</param>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Dispose">
@@ -120,16 +125,6 @@
             Dispose.
             </summary>
             <param name="disposing">Disposing.</param>
-        </member>
-        <member name="M:SimpleUdp.UdpEndpoint.Start">
-            <summary>
-            Start the UDP listener to receive datagrams.  Before calling this method, set the 'DatagramReceived' event.
-            </summary>
-        </member>
-        <member name="M:SimpleUdp.UdpEndpoint.Stop">
-            <summary>
-            Stop the UDP listener.
-            </summary>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Send(System.String,System.Int32,System.String,System.Int16)">
             <summary>
