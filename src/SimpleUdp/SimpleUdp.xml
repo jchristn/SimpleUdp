@@ -112,8 +112,8 @@
             Instantiate the UDP endpoint.
             <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
             </summary>
-            <param name="ip">Local IP address.  If null, a broadcast endpoint will be created.</param>
-            <param name="port">Local port number.</param>
+            <param name="ip">IP address on which to listen.</param>
+            <param name="port">Port number on which to listen.</param>
         </member>
         <member name="M:SimpleUdp.UdpEndpoint.Dispose">
             <summary>

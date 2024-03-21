@@ -98,31 +98,26 @@
         /// Instantiate the UDP endpoint.
         /// <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
         /// </summary>
-        /// <param name="ip">Local IP address.  If null, a broadcast endpoint will be created.</param>
-        /// <param name="port">Local port number.</param>
+        /// <param name="ip">IP address on which to listen.</param>
+        /// <param name="port">Port number on which to listen.</param>
         public UdpEndpoint(string ip, int port)
         {
             if (port < 0 || port > 65535) throw new ArgumentException("Port must be greater than or equal to zero and less than or equal to 65535.");
             _Ip = ip;
             _Port = port;
 
-            if (String.IsNullOrEmpty(ip))
-            {
-                _IPAddress = IPAddress.Any;
-                _UdpClient = new UdpClient(new IPEndPoint(_IPAddress, _Port));
-                _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                _UdpClient.ExclusiveAddressUse = false;
-            }
-            else
-            {
-                _IPAddress = IPAddress.Parse(_Ip);
-                _UdpClient = new UdpClient(new IPEndPoint(_IPAddress, _Port));
-            }
+            if (String.IsNullOrEmpty(ip)) _IPAddress = IPAddress.Any;
+            else _IPAddress = IPAddress.Parse(ip);
+
+            _UdpClient = new UdpClient();
+            _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _UdpClient.ExclusiveAddressUse = false;
 
             State state = new State(_MaxDatagramSize);
 
             _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
+            _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
 
             _Socket.BeginReceiveFrom(state.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback = (ar) =>
             {
@@ -134,7 +129,7 @@
                     string senderIpPort = _Endpoint.ToString();
                     string senderIp = null;
                     int senderPort = 0;
-                    Common.ParseIpPort(senderIpPort, out senderIp, out port);
+                    Common.ParseIpPort(senderIpPort, out senderIp, out senderPort);
 
                     if (!_RemoteSockets.Contains(senderIpPort))
                     {
