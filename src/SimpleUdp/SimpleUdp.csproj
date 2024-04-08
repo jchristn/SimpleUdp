@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net461;net462;net48;net6.0;net7.0;net8.0</TargetFrameworks>
-    <Version>2.0.1</Version>
+    <TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
+    <Version>2.0.2</Version>
     <OutputType>Library</OutputType>
 	<ApplicationIcon>assets\icon.ico</ApplicationIcon>
     <StartupObject />
     <Authors>Joel Christner</Authors>
     <Description>SimpleUdp is a super simple way of building UDP clients and servers in C#.</Description>
-    <Copyright>(c)2022 Joel Christner</Copyright>
+    <Copyright>(c)2024 Joel Christner</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/jchristn/SimpleUdp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
@@ -17,6 +17,8 @@
     <PackageReleaseNotes>Breaking changes to accommodate multi-platform</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,15 +26,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Caching.dll" Version="2.0.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Include="..\..\assets\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="LICENSE.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <PackageReference Include="Caching" Version="3.1.1" />
     <None Update="assets\icon.ico">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
@@ -41,6 +48,9 @@
     <None Update="assets\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SimpleUdp.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
