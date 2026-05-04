@@ -1,13 +1,13 @@
-﻿![alt tag](https://github.com/jchristn/simpleudp/blob/master/assets/icon.ico)
+﻿![alt tag](https://raw.githubusercontent.com/jchristn/SimpleUdp/main/assets/icon.ico)
 
 # SimpleUdp
 
-## Simple wrapper for UDP client and server in C# 
+## Simple wrapper for UDP client and server in C#
 
-[![NuGet Version](https://img.shields.io/nuget/v/SimpleUdp.svg?style=flat)](https://www.nuget.org/packages/SimpleUdp/) [![NuGet](https://img.shields.io/nuget/dt/SimpleUdp.svg)](https://www.nuget.org/packages/SimpleUdp)    
+[![NuGet Version](https://img.shields.io/nuget/v/SimpleUdp.svg?style=flat)](https://www.nuget.org/packages/SimpleUdp/) [![NuGet](https://img.shields.io/nuget/dt/SimpleUdp.svg)](https://www.nuget.org/packages/SimpleUdp)
 
-SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
- 
+SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
+
 ## New in v3.0.0
 
 - Require `.NET 8.0` or newer
@@ -31,19 +31,19 @@ Thanks to community members that have helped improve this library!  @jholzer @ch
 
 I have you covered.
 
-- WatsonTcp - easiest way to build TCP-based applications with built-in framing 
+- WatsonTcp - easiest way to build TCP-based applications with built-in framing
   - Github: https://github.com/jchristn/watsontcp
-  - NuGet: https://www.nuget.org/packages/WatsonTcp/ 
+  - NuGet: https://www.nuget.org/packages/WatsonTcp/
   - [![NuGet Version](https://img.shields.io/nuget/v/WatsonTcp.svg?style=flat)](https://www.nuget.org/packages/WatsonTcp/)
 - SimpleTcp - lightweight TCP wrapper without framing
   - Github: https://github.com/jchristn/simpletcp
-  - NuGet: https://www.nuget.org/packages/SuperSimpleTcp/ 
+  - NuGet: https://www.nuget.org/packages/SuperSimpleTcp/
   - [![NuGet Version](https://img.shields.io/nuget/v/SuperSimpleTcp.svg?style=flat)](https://www.nuget.org/packages/SuperSimpleTcp/)
 - CavemanTcp - TCP wrapper exposing controls for sending and receiving data to build state machines
   - Github: https://github.com/jchristn/cavemantcp
-  - NuGet: https://www.nuget.org/packages/CavemanTcp/ 
+  - NuGet: https://www.nuget.org/packages/CavemanTcp/
   - [![NuGet Version](https://img.shields.io/nuget/v/CavemanTcp.svg?style=flat)](https://www.nuget.org/packages/CavemanTcp/)
-  
+
 Don't know what to use?  Just ask!  File an issue, I'll be happy to help.
 
 ## Simple Example
@@ -69,7 +69,7 @@ static void EndpointDetected(object sender, EndpointMetadata md)
 static void DatagramReceived(object sender, Datagram dg)
 {
   Console.WriteLine("[" + dg.Ip + ":" + dg.Port + "]: " + Encoding.UTF8.GetString(dg.Data));
-} 
+}
 ```
 
 ## The Node Project
@@ -103,7 +103,7 @@ Send message from node 2 to node 1.
 [127.0.0.1:8000]: hello to my friend on port 8001!
 127.0.0.1:8000 hello back to you my friend!
 ```
- 
+
 ## Version History
 
 Please refer to CHANGELOG.md.
