@@ -2,6 +2,11 @@
 
 ## Current Version
 
+v3.0.0
+
+- Drop target frameworks below `.NET 8.0`
+- Use a single bound socket for both send and receive so outbound datagrams originate from the configured local port
+
 v2.0.x
 
 - Retarget to .NET 8.0

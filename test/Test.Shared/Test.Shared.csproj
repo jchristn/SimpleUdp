@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Shared SimpleUdp test descriptors and helpers.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Touchstone.Core" Version="0.1.12" />
+    <ProjectReference Include="..\..\src\SimpleUdp\SimpleUdp.csproj" />
+  </ItemGroup>
+
+</Project>

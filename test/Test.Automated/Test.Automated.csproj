@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Description>Console test runner for the shared SimpleUdp test suites.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Touchstone.Cli" Version="0.1.12" />
+    <ProjectReference Include="..\Test.Shared\Test.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

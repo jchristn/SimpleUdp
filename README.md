@@ -8,6 +8,11 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.  
  
+## New in v3.0.0
+
+- Require `.NET 8.0` or newer
+- Use a single bound socket for both inbound and outbound UDP traffic
+
 ## New in v2.0.x
 
 - Retarget to .NET 8.0
@@ -71,12 +76,12 @@ static void DatagramReceived(object sender, Datagram dg)
 
 Start node 1.
 ```
-Node\bin\Debug\netcoreapp3.1> node 127.0.0.1 8000
+Node\bin\Debug\net8.0> node 127.0.0.1 8000
 ```
 
 Start node 2.
 ```
-Node\bin\Debug\netcoreapp3.1> node 127.0.0.1 8001
+Node\bin\Debug\net8.0> node 127.0.0.1 8001
 ```
 
 Send message from node 1 to node 2.  To do this, enter a command as follows:

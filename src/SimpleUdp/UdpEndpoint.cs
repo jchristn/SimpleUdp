@@ -69,7 +69,6 @@
         private Socket _Socket = null;
         private int _MaxDatagramSize = 65507;
         private EndPoint _Endpoint = new IPEndPoint(IPAddress.Any, 0);
-        private UdpClient _UdpClient = null;
         private AsyncCallback _ReceiveCallback = null;
 
         private LRUCache<string, Socket> _RemoteSockets = new LRUCache<string, Socket>(100, 1);
@@ -96,7 +95,7 @@
 
         /// <summary>
         /// Instantiate the UDP endpoint.
-        /// <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
+        /// <para>If you wish to receive datagrams, subscribe to the 'DatagramReceived' event.</para>
         /// </summary>
         /// <param name="ip">IP address on which to listen.</param>
         /// <param name="port">Port number on which to listen.</param>
@@ -108,10 +107,6 @@
 
             if (String.IsNullOrEmpty(ip)) _IPAddress = IPAddress.Any;
             else _IPAddress = IPAddress.Parse(ip);
-
-            _UdpClient = new UdpClient();
-            _UdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            _UdpClient.ExclusiveAddressUse = false;
 
             State state = new State(_MaxDatagramSize);
 
@@ -180,8 +175,6 @@
 
             if (disposing)
             {
-                _UdpClient?.Dispose();
-
                 if (_Socket != null)
                 {
                     _Socket.Close();
@@ -277,8 +270,8 @@
 
             try
             {
-                _UdpClient.Ttl = ttl;
-                _UdpClient.Send(data, data.Length, ipe);
+                _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, (int)ttl);
+                _Socket.SendTo(data, ipe);
             }
             finally
             {
@@ -294,8 +287,11 @@
 
             try
             {
-                _UdpClient.Ttl = ttl;
-                await _UdpClient.SendAsync(data, data.Length, ipe).ConfigureAwait(false);
+                _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.IpTimeToLive, (int)ttl);
+                await Task.Factory.FromAsync(
+                    (callback, state) => _Socket.BeginSendTo(data, 0, data.Length, SocketFlags.None, ipe, callback, state),
+                    _Socket.EndSendTo,
+                    null).ConfigureAwait(false);
             }
             catch (TaskCanceledException)
             {
