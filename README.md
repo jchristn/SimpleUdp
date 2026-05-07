@@ -8,6 +8,10 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
 
+## New in v3.1.0
+
+- Add `EnableBroadcast` for opt-in UDP broadcast sends without changing the existing send and receive APIs
+
 ## New in v3.0.0
 
 - Require `.NET 8.0` or newer
@@ -60,6 +64,10 @@ udp.DatagramReceived += DatagramReceived;
 
 // send a message...
 udp.Send("127.0.0.1", 8001, "Hello to my friend listening on port 8001!");
+
+// enable broadcast if you need to send to a broadcast address...
+udp.EnableBroadcast = true;
+udp.Send("255.255.255.255", 8001, "Hello to everyone listening on port 8001!");
 
 static void EndpointDetected(object sender, EndpointMetadata md)
 {

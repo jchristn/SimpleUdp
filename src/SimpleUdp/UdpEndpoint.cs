@@ -58,6 +58,21 @@
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this endpoint can send UDP broadcast packets.
+        /// </summary>
+        public bool EnableBroadcast
+        {
+            get
+            {
+                return _Socket.EnableBroadcast;
+            }
+            set
+            {
+                _Socket.EnableBroadcast = value;
+            }
+        }
+
         #endregion
 
         #region Private-Members

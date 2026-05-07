@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <OutputType>Library</OutputType>
 	<ApplicationIcon>assets\icon.ico</ApplicationIcon>
     <StartupObject />
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
-    <PackageReleaseNotes>Breaking change: require .NET 8.0+ and use a single bound socket for both inbound and outbound UDP traffic.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add EnableBroadcast for opt-in UDP broadcast sends while preserving the existing API shape and send/receive behavior.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>

@@ -2,6 +2,7 @@ namespace Test.Shared
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Sockets;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace Test.Shared
                     TouchstoneDescriptorFactory.Case(SuiteId, "constructor-null-ip-loopback", "Constructor accepts a null IP and still receives loopback traffic", ConstructorAcceptsNullIpAndReceivesLoopbackTrafficAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "endpoints-start-empty", "Endpoints starts empty", EndpointsStartsEmptyAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "max-datagram-size-validation", "MaxDatagramSize validates range and stores a valid value", MaxDatagramSizeValidatesRangeAndStoresValueAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-toggle", "EnableBroadcast defaults to disabled and can be toggled", EnableBroadcastDefaultsToDisabledAndCanBeToggledAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-send", "EnableBroadcast allows broadcast sends that otherwise fail", EnableBroadcastAllowsBroadcastSendsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "send-string-validation", "Send string overload validates arguments", SendStringOverloadValidatesArgumentsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "send-bytes-validation", "Send byte overload validates arguments", SendByteOverloadValidatesArgumentsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "sendasync-string-validation", "SendAsync string overload validates arguments", SendAsyncStringOverloadValidatesArgumentsAsync),
@@ -83,6 +86,33 @@ namespace Test.Shared
 
             endpoint.MaxDatagramSize = 2048;
             AssertEx.Equal(2048, endpoint.MaxDatagramSize, "MaxDatagramSize should store valid values.");
+            return Task.CompletedTask;
+        }
+
+        private static Task EnableBroadcastDefaultsToDisabledAndCanBeToggledAsync()
+        {
+            using UdpEndpoint endpoint = new UdpEndpoint(null!, UdpTestHelpers.GetAvailableUdpPort());
+
+            AssertEx.False(endpoint.EnableBroadcast, "EnableBroadcast should default to disabled.");
+
+            endpoint.EnableBroadcast = true;
+            AssertEx.True(endpoint.EnableBroadcast, "EnableBroadcast should report enabled after being set.");
+
+            endpoint.EnableBroadcast = false;
+            AssertEx.False(endpoint.EnableBroadcast, "EnableBroadcast should report disabled after being reset.");
+            return Task.CompletedTask;
+        }
+
+        private static Task EnableBroadcastAllowsBroadcastSendsAsync()
+        {
+            using UdpEndpoint endpoint = new UdpEndpoint(null!, UdpTestHelpers.GetAvailableUdpPort());
+            byte[] payload = new byte[] { 1, 2, 3 };
+            int targetPort = UdpTestHelpers.GetAvailableUdpPort();
+
+            AssertEx.Throws<SocketException>(() => endpoint.Send("255.255.255.255", targetPort, payload), "Broadcast sends should fail while EnableBroadcast is disabled.");
+
+            endpoint.EnableBroadcast = true;
+            endpoint.Send("255.255.255.255", targetPort, payload);
             return Task.CompletedTask;
         }
 

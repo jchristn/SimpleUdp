@@ -2,6 +2,11 @@
 
 ## Current Version
 
+v3.1.0
+
+- Add `EnableBroadcast` for opt-in UDP broadcast sends without changing existing send or receive APIs
+- Preserve the single bound socket model introduced in `v3.0.0`
+
 v3.0.0
 
 - Drop target frameworks below `.NET 8.0`
