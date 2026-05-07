@@ -27,7 +27,8 @@ namespace Test.Shared
                     TouchstoneDescriptorFactory.Case(SuiteId, "endpoints-start-empty", "Endpoints starts empty", EndpointsStartsEmptyAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "max-datagram-size-validation", "MaxDatagramSize validates range and stores a valid value", MaxDatagramSizeValidatesRangeAndStoresValueAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-toggle", "EnableBroadcast defaults to disabled and can be toggled", EnableBroadcastDefaultsToDisabledAndCanBeToggledAsync),
-                    TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-send", "EnableBroadcast allows broadcast sends that otherwise fail", EnableBroadcastAllowsBroadcastSendsAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-send", "EnableBroadcast allows end-to-end broadcast delivery", EnableBroadcastAllowsBroadcastSendsAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "enable-broadcast-sendasync", "EnableBroadcast allows end-to-end async broadcast delivery", EnableBroadcastAllowsAsyncBroadcastSendsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "send-string-validation", "Send string overload validates arguments", SendStringOverloadValidatesArgumentsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "send-bytes-validation", "Send byte overload validates arguments", SendByteOverloadValidatesArgumentsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "sendasync-string-validation", "SendAsync string overload validates arguments", SendAsyncStringOverloadValidatesArgumentsAsync),
@@ -103,17 +104,38 @@ namespace Test.Shared
             return Task.CompletedTask;
         }
 
-        private static Task EnableBroadcastAllowsBroadcastSendsAsync()
+        private static async Task EnableBroadcastAllowsBroadcastSendsAsync()
         {
-            using UdpEndpoint endpoint = new UdpEndpoint(null!, UdpTestHelpers.GetAvailableUdpPort());
             byte[] payload = new byte[] { 1, 2, 3 };
-            int targetPort = UdpTestHelpers.GetAvailableUdpPort();
+            (Datagram datagram, EndpointMetadata metadata, int senderPort) = await SendAndReceiveBroadcastAsync(
+                (sender, receiverPort) =>
+                {
+                    sender.Send("255.255.255.255", receiverPort, payload);
+                    return Task.CompletedTask;
+                },
+                payload).ConfigureAwait(false);
 
-            AssertEx.Throws<SocketException>(() => endpoint.Send("255.255.255.255", targetPort, payload), "Broadcast sends should fail while EnableBroadcast is disabled.");
+            AssertEx.Equal(senderPort, datagram.Port, "Broadcast receive should preserve the sender's configured local port.");
+            AssertEx.Equal(senderPort, metadata.Port, "Broadcast endpoint detection should preserve the sender's configured local port.");
+            AssertEx.NotNull(datagram.Ip, "Broadcast receive should report the sender IP.");
+            AssertEx.NotNull(metadata.Ip, "Broadcast endpoint detection should report the sender IP.");
+            AssertEx.Equal(datagram.Ip, metadata.Ip, "Broadcast endpoint detection should match the received sender IP.");
+            AssertEx.SequenceEqual(payload, datagram.Data, "Broadcast receive should preserve the exact payload.");
+        }
 
-            endpoint.EnableBroadcast = true;
-            endpoint.Send("255.255.255.255", targetPort, payload);
-            return Task.CompletedTask;
+        private static async Task EnableBroadcastAllowsAsyncBroadcastSendsAsync()
+        {
+            byte[] payload = new byte[] { 4, 5, 6, 7 };
+            (Datagram datagram, EndpointMetadata metadata, int senderPort) = await SendAndReceiveBroadcastAsync(
+                (sender, receiverPort) => sender.SendAsync("255.255.255.255", receiverPort, payload),
+                payload).ConfigureAwait(false);
+
+            AssertEx.Equal(senderPort, datagram.Port, "Async broadcast receive should preserve the sender's configured local port.");
+            AssertEx.Equal(senderPort, metadata.Port, "Async broadcast endpoint detection should preserve the sender's configured local port.");
+            AssertEx.NotNull(datagram.Ip, "Async broadcast receive should report the sender IP.");
+            AssertEx.NotNull(metadata.Ip, "Async broadcast endpoint detection should report the sender IP.");
+            AssertEx.Equal(datagram.Ip, metadata.Ip, "Async broadcast endpoint detection should match the received sender IP.");
+            AssertEx.SequenceEqual(payload, datagram.Data, "Async broadcast receive should preserve the exact payload.");
         }
 
         private static Task SendStringOverloadValidatesArgumentsAsync()
@@ -304,6 +326,29 @@ namespace Test.Shared
             {
                 endpoint.Dispose();
             }
+        }
+
+        private static async Task<(Datagram Datagram, EndpointMetadata Metadata, int SenderPort)> SendAndReceiveBroadcastAsync(Func<UdpEndpoint, int, Task> send, byte[] expectedPayload)
+        {
+            (int senderPort, int receiverPort) = UdpTestHelpers.GetAvailableUdpPortPair();
+            TaskCompletionSource<EndpointMetadata> detected = UdpTestHelpers.CreateCompletionSource<EndpointMetadata>();
+            TaskCompletionSource<Datagram> received = UdpTestHelpers.CreateCompletionSource<Datagram>();
+
+            using UdpEndpoint sender = new UdpEndpoint(null!, senderPort);
+            using UdpEndpoint receiver = new UdpEndpoint(null!, receiverPort);
+
+            receiver.EndpointDetected += (_, md) => detected.TrySetResult(md);
+            receiver.DatagramReceived += (_, dg) => received.TrySetResult(dg);
+
+            AssertEx.Throws<SocketException>(() => sender.Send("255.255.255.255", receiverPort, expectedPayload), "Broadcast sends should fail while EnableBroadcast is disabled.");
+
+            sender.EnableBroadcast = true;
+            await send(sender, receiverPort).ConfigureAwait(false);
+
+            EndpointMetadata metadata = await UdpTestHelpers.WithTimeout(detected.Task, "Broadcast endpoint detection").ConfigureAwait(false);
+            Datagram datagram = await UdpTestHelpers.WithTimeout(received.Task, "Broadcast datagram delivery").ConfigureAwait(false);
+            AssertEx.Contains(metadata.Ip + ":" + senderPort, receiver.Endpoints, "Broadcast receive should add the sender endpoint to the endpoint cache.");
+            return (datagram, metadata, senderPort);
         }
     }
 }
