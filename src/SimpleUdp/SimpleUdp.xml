@@ -107,10 +107,15 @@
             Maximum datagram size, must be greater than zero and less than or equal to 65507.
             </summary>
         </member>
+        <member name="P:SimpleUdp.UdpEndpoint.EnableBroadcast">
+            <summary>
+            Gets or sets a value indicating whether this endpoint can send UDP broadcast packets.
+            </summary>
+        </member>
         <member name="M:SimpleUdp.UdpEndpoint.#ctor(System.String,System.Int32)">
             <summary>
             Instantiate the UDP endpoint.
-            <para>If you wish to also receive datagrams, set the 'DatagramReceived' event and call 'StartServer()'.</para>
+            <para>If you wish to receive datagrams, subscribe to the 'DatagramReceived' event.</para>
             </summary>
             <param name="ip">IP address on which to listen.</param>
             <param name="port">Port number on which to listen.</param>
