@@ -8,6 +8,13 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
 
+## New in v3.1.1
+
+- Add Touchstone-based shared, console, xUnit, and NUnit test projects under `src/`
+- Add multi-process startup-order coverage and package-consumer verification
+- Keep the receive loop alive on Windows after sending to a UDP port that is not listening yet
+- Prevent invalid destination IP sends from leaking the internal send semaphore
+
 ## New in v3.1.0
 
 - Add `EnableBroadcast` for opt-in UDP broadcast sends without changing the existing send and receive APIs
@@ -26,6 +33,26 @@ SimpleUdp provides simple methods for creating your own UDP-based sockets applic
 ## Help or Feedback
 
 Need help or have feedback?  Please file an issue here!
+
+## Tests
+
+Touchstone-based tests live under `src/`:
+
+- `Test.Shared` contains the reusable test case descriptors and helpers
+- `Test.Automated` is the console runner
+- `Test.Xunit` runs the shared cases through the Touchstone xUnit adapter
+- `Test.Nunit` runs the shared cases through the Touchstone NUnit adapter
+
+Run the console suite:
+```
+dotnet run --project src/Test.Automated --framework net10.0
+```
+
+Run adapter suites:
+```
+dotnet test src/Test.Xunit/Test.Xunit.csproj --framework net10.0
+dotnet test src/Test.Nunit/Test.Nunit.csproj --framework net10.0
+```
 
 ## Special Thanks
 

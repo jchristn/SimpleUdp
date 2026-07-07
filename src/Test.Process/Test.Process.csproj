@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <Description>Process helper for SimpleUdp multi-process integration tests.</Description>
+    <NoWarn>1701;1702;CS1591;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8625;CS8632</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleUdp\SimpleUdp.csproj" />
+  </ItemGroup>
+
+</Project>

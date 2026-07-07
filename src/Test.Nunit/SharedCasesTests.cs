@@ -59,4 +59,17 @@ namespace Test.Nunit
             await testCase.ExecuteAsync(CancellationToken.None).ConfigureAwait(false);
         }
     }
+
+    [TestFixture]
+    [NonParallelizable]
+    public class PackageVerificationTests
+    {
+        public static IEnumerable Cases => new TouchstoneTestCaseSource(new[] { PackageVerificationTestSuite.Create() });
+
+        [TestCaseSource(nameof(Cases))]
+        public async Task Run(TestCaseDescriptor testCase)
+        {
+            await testCase.ExecuteAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+    }
 }

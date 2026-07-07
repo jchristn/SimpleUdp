@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Sockets;
+    using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -126,6 +127,7 @@
             State state = new State(_MaxDatagramSize);
 
             _Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            DisableUdpConnectionReset(_Socket);
             _Socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.ReuseAddress, true);
             _Socket.Bind(new IPEndPoint(_IPAddress, _Port));
 
@@ -144,19 +146,17 @@
                     if (!_RemoteSockets.Contains(senderIpPort))
                     {
                         _RemoteSockets.AddReplace(senderIpPort, _Socket);
-                        EndpointDetected?.Invoke(this, new EndpointMetadata(senderIp, senderPort));
-                    }
-
-                    if (bytes == so.Buffer.Length)
-                    {
-                        DatagramReceived?.Invoke(this, new Datagram(senderIp, senderPort, so.Buffer));
+                        OnEndpointDetected(new EndpointMetadata(senderIp, senderPort));
                     }
                     else
                     {
-                        byte[] buffer = new byte[bytes];
-                        Buffer.BlockCopy(so.Buffer, 0, buffer, 0, bytes);
-                        DatagramReceived?.Invoke(this, new Datagram(senderIp, senderPort, buffer));
+                        _RemoteSockets.AddReplace(senderIpPort, _Socket);
                     }
+
+                    int bytesToCopy = Math.Min(bytes, _MaxDatagramSize);
+                    byte[] buffer = new byte[bytesToCopy];
+                    Buffer.BlockCopy(so.Buffer, 0, buffer, 0, bytesToCopy);
+                    OnDatagramReceived(new Datagram(senderIp, senderPort, buffer));
 
                     _Socket.BeginReceiveFrom(so.Buffer, 0, _MaxDatagramSize, SocketFlags.None, ref _Endpoint, _ReceiveCallback, so);
                 }
@@ -277,11 +277,53 @@
 
         #region Private-Methods
 
+        private static void DisableUdpConnectionReset(Socket socket)
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) return;
+
+            const int SioUdpConnReset = unchecked((int)0x9800000C);
+            socket.IOControl((IOControlCode)SioUdpConnReset, new byte[] { 0 }, null);
+        }
+
+        private void OnEndpointDetected(EndpointMetadata metadata)
+        {
+            EventHandler<EndpointMetadata> handler = EndpointDetected;
+            if (handler == null) return;
+
+            foreach (EventHandler<EndpointMetadata> subscriber in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(this, metadata);
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void OnDatagramReceived(Datagram datagram)
+        {
+            EventHandler<Datagram> handler = DatagramReceived;
+            if (handler == null) return;
+
+            foreach (EventHandler<Datagram> subscriber in handler.GetInvocationList())
+            {
+                try
+                {
+                    subscriber(this, datagram);
+                }
+                catch
+                {
+                }
+            }
+        }
+
         private void SendInternal(string ip, int port, byte[] data, short ttl)
         {
-            _SendLock.Wait();
-
             IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
+
+            _SendLock.Wait();
 
             try
             {
@@ -296,9 +338,9 @@
 
         private async Task SendInternalAsync(string ip, int port, byte[] data, short ttl)
         {
-            await _SendLock.WaitAsync();
-
             IPEndPoint ipe = new IPEndPoint(IPAddress.Parse(ip), port);
+
+            await _SendLock.WaitAsync();
 
             try
             {

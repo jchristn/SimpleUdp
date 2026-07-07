@@ -13,7 +13,8 @@ namespace Test.Shared
                 CommonTestSuite.Create(),
                 DatagramTestSuite.Create(),
                 EndpointMetadataTestSuite.Create(),
-                UdpEndpointTestSuite.Create()
+                UdpEndpointTestSuite.Create(),
+                PackageVerificationTestSuite.Create()
             };
         }
 

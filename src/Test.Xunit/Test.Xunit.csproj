@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
     <Description>xUnit adapter over the shared SimpleUdp test suites.</Description>
+    <NoWarn>1701;1702;CS1591;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8625;CS8632</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test.Shared\Test.Shared.csproj" />
+    <ProjectReference Include="..\Test.Process\Test.Process.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

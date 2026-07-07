@@ -1,18 +1,17 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Description>Shared SimpleUdp test descriptors and helpers.</Description>
     <NoWarn>1701;1702;CS1591;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8625;CS8632</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <NoWarn>1701;1702;CS1591;CS1998;CS8600;CS8602;CS8603;CS8604;CS8618;CS8625;CS8632</NoWarn>
-  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Touchstone.Core" Version="0.1.12" />
+    <ProjectReference Include="..\SimpleUdp\SimpleUdp.csproj" />
+  </ItemGroup>
 
 </Project>

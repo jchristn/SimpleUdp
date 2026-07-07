@@ -51,11 +51,36 @@ namespace Test.Shared
             }
         }
 
+        public static void DoesNotContain<T>(T unexpected, IEnumerable<T> values, string message)
+        {
+            if (values.Contains(unexpected))
+            {
+                throw new TestAssertionException(message + " Unexpectedly found <" + unexpected + ">.");
+            }
+        }
+
         public static void SequenceEqual(byte[] expected, byte[] actual, string message)
         {
             if (!expected.SequenceEqual(actual))
             {
                 throw new TestAssertionException(message + " Byte sequences differed.");
+            }
+        }
+
+        public static void SetEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, string message)
+        {
+            HashSet<T> expectedSet = new HashSet<T>(expected);
+            HashSet<T> actualSet = new HashSet<T>(actual);
+
+            if (!expectedSet.SetEquals(actualSet))
+            {
+                throw new TestAssertionException(
+                    message
+                    + " Expected <"
+                    + String.Join(", ", expectedSet)
+                    + "> but found <"
+                    + String.Join(", ", actualSet)
+                    + ">.");
             }
         }
 

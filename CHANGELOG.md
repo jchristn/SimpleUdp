@@ -2,6 +2,13 @@
 
 ## Current Version
 
+v3.1.1
+
+- Add Touchstone-based shared test descriptors plus console, xUnit, and NUnit runners under `src/`
+- Add broad coverage for parsing, model validation, endpoint detection, send validation, broadcast, payload integrity, async/concurrent sends, endpoint cache bounds, multi-process startup order, package verification, and disposal behavior
+- Keep the receive loop alive on Windows after sending to a UDP port that is not listening yet
+- Prevent invalid destination IP sends from leaking the internal send semaphore
+
 v3.1.0
 
 - Add `EnableBroadcast` for opt-in UDP broadcast sends without changing existing send or receive APIs
