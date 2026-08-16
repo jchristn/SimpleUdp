@@ -2,19 +2,19 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <Version>3.1.1</Version>
+    <Version>3.2.0</Version>
     <OutputType>Library</OutputType>
 	<ApplicationIcon>assets\icon.ico</ApplicationIcon>
     <StartupObject />
     <Authors>Joel Christner</Authors>
     <Description>SimpleUdp is a super simple way of building UDP clients and servers in C#.</Description>
-    <Copyright>(c)2024 Joel Christner</Copyright>
+    <Copyright>(c)2026 Joel Christner</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/jchristn/SimpleUdp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
-    <PackageReleaseNotes>Add Touchstone-based shared, console, xUnit, and NUnit tests including multi-process startup-order and package verification; keep the receive loop alive after sends to unopened UDP ports on Windows; prevent invalid destination IP sends from leaking the send semaphore.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update dependencies (Caching 5.0.1) and test tooling; add synchronous concurrent-send and post-dispose broadcast coverage. No public API changes.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -41,7 +41,7 @@
       <PackagePath></PackagePath>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <PackageReference Include="Caching" Version="3.1.1" />
+    <PackageReference Include="Caching" Version="5.0.1" />
     <None Update="assets\icon.ico">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>

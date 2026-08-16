@@ -63,9 +63,11 @@ namespace Test.Shared
                     TouchstoneDescriptorFactory.Case(SuiteId, "event-handler-exceptions-isolated", "Event handler exceptions do not stop the receive loop", EventHandlerExceptionsDoNotStopTheReceiveLoopAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "event-order-first-datagram", "EndpointDetected is raised before DatagramReceived for a new endpoint", EndpointDetectedIsRaisedBeforeDatagramReceivedForNewEndpointAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "sendasync-concurrent", "SendAsync serializes concurrent sends without data loss", SendAsyncSerializesConcurrentSendsWithoutDataLossAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "send-sync-concurrent", "Send serializes concurrent synchronous sends without data loss", SendSerializesConcurrentSynchronousSendsWithoutDataLossAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "max-datagram-size-oversize-guards", "MaxDatagramSize blocks oversize sends across all overloads", MaxDatagramSizeBlocksOversizeSendsAcrossAllOverloadsAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "dispose-idempotent", "Dispose is idempotent", DisposeIsIdempotentAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "dispose-blocks-future-sends", "Dispose blocks future sends", DisposeBlocksFutureSendsAsync),
+                    TouchstoneDescriptorFactory.Case(SuiteId, "dispose-blocks-enable-broadcast", "EnableBroadcast throws after dispose", EnableBroadcastThrowsAfterDisposeAsync),
                     TouchstoneDescriptorFactory.Case(SuiteId, "dispose-raises-server-stopped", "Dispose raises ServerStopped for the receive loop", DisposeRaisesServerStoppedForTheReceiveLoopAsync)
                 });
         }
@@ -831,6 +833,40 @@ namespace Test.Shared
             AssertEx.SetEqual(expected, payloads, "Concurrent async sends should deliver each payload exactly once.");
         }
 
+        private static async Task SendSerializesConcurrentSynchronousSendsWithoutDataLossAsync()
+        {
+            (int senderPort, int receiverPort) = UdpTestHelpers.GetAvailableUdpPortPair();
+            const int MessageCount = 20;
+            TaskCompletionSource<bool> receivedAll = UdpTestHelpers.CreateCompletionSource<bool>();
+            List<string> payloads = new List<string>();
+
+            using UdpEndpoint sender = new UdpEndpoint("127.0.0.1", senderPort);
+            using UdpEndpoint receiver = new UdpEndpoint("127.0.0.1", receiverPort);
+
+            receiver.DatagramReceived += (_, dg) =>
+            {
+                lock (payloads)
+                {
+                    payloads.Add(Encoding.UTF8.GetString(dg.Data));
+                    if (payloads.Count == MessageCount) receivedAll.TrySetResult(true);
+                }
+            };
+
+            List<string> expected = new List<string>();
+            List<Task> sends = new List<Task>();
+            for (int i = 0; i < MessageCount; i++)
+            {
+                string payload = "sync-message-" + i;
+                expected.Add(payload);
+                sends.Add(Task.Run(() => sender.Send("127.0.0.1", receiverPort, payload)));
+            }
+
+            await Task.WhenAll(sends).ConfigureAwait(false);
+            await UdpTestHelpers.WithTimeout(receivedAll.Task, "Receiving all concurrent synchronous sends", TimeSpan.FromSeconds(10)).ConfigureAwait(false);
+
+            AssertEx.SetEqual(expected, payloads, "Concurrent synchronous sends should deliver each payload exactly once through the send lock.");
+        }
+
         private static async Task MaxDatagramSizeBlocksOversizeSendsAcrossAllOverloadsAsync()
         {
             using UdpEndpoint endpoint = new UdpEndpoint("127.0.0.1", UdpTestHelpers.GetAvailableUdpPort());
@@ -860,6 +896,16 @@ namespace Test.Shared
             AssertEx.Throws<ObjectDisposedException>(() => endpoint.Send("127.0.0.1", 9000, new byte[] { 1 }), "Send(byte[]) should fail after disposal.");
             await AssertEx.ThrowsAsync<ObjectDisposedException>(() => endpoint.SendAsync("127.0.0.1", 9000, "after-dispose"), "SendAsync(string) should fail after disposal.").ConfigureAwait(false);
             await AssertEx.ThrowsAsync<ObjectDisposedException>(() => endpoint.SendAsync("127.0.0.1", 9000, new byte[] { 1 }), "SendAsync(byte[]) should fail after disposal.").ConfigureAwait(false);
+        }
+
+        private static Task EnableBroadcastThrowsAfterDisposeAsync()
+        {
+            UdpEndpoint endpoint = new UdpEndpoint("127.0.0.1", UdpTestHelpers.GetAvailableUdpPort());
+            endpoint.Dispose();
+
+            AssertEx.Throws<ObjectDisposedException>(() => _ = endpoint.EnableBroadcast, "EnableBroadcast getter should fail after disposal.");
+            AssertEx.Throws<ObjectDisposedException>(() => endpoint.EnableBroadcast = true, "EnableBroadcast setter should fail after disposal.");
+            return Task.CompletedTask;
         }
 
         private static async Task DisposeRaisesServerStoppedForTheReceiveLoopAsync()

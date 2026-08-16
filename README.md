@@ -8,12 +8,11 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
 
-## New in v3.1.1
+## New in v3.2.0
 
-- Add Touchstone-based shared, console, xUnit, and NUnit test projects under `src/`
-- Add multi-process startup-order coverage and package-consumer verification
-- Keep the receive loop alive on Windows after sending to a UDP port that is not listening yet
-- Prevent invalid destination IP sends from leaking the internal send semaphore
+- Update the `Caching` dependency to `5.0.1` and refresh the test tooling
+- Add synchronous concurrent-send and post-dispose broadcast test coverage
+- No public API changes
 
 ## New in v3.1.0
 

@@ -2,6 +2,12 @@
 
 ## Current Version
 
+v3.2.0
+
+- Update the `Caching` dependency to `5.0.1` and refresh test tooling (Microsoft.NET.Test.Sdk, coverlet, NUnit, NUnit3TestAdapter, xUnit runner)
+- Add synchronous concurrent-send serialization and post-dispose `EnableBroadcast` coverage
+- No public API changes
+
 v3.1.1
 
 - Add Touchstone-based shared test descriptors plus console, xUnit, and NUnit runners under `src/`
