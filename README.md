@@ -8,6 +8,11 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
 
+## New in v3.3.1
+
+- Update the `Caching` dependency to `5.1.2` and refresh the test tooling (Touchstone 0.2.0, NUnit 5.0.0, Microsoft.NET.Test.Sdk, coverlet, NUnit analyzers/adapter)
+- No public API changes
+
 ## New in v3.3.0
 
 - Built-in metrics and traces through the BCL `Meter` and `ActivitySource` named `SimpleUdp` (no new dependencies, near-zero cost when nothing is listening)

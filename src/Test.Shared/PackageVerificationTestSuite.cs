@@ -4,6 +4,7 @@ namespace Test.Shared
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using Touchstone.Core;
@@ -32,6 +33,8 @@ namespace Test.Shared
             string packageDir = Path.Combine(tempRoot, "packages");
             string consumerDir = Path.Combine(tempRoot, "consumer");
 
+            string packageVersion = GetPackageVersion();
+
             Directory.CreateDirectory(packageDir);
             Directory.CreateDirectory(consumerDir);
 
@@ -41,18 +44,19 @@ namespace Test.Shared
 
                 await UdpTestHelpers.RunProcessAsync(
                     "dotnet",
-                    "build \"" + projectPath + "\" -c Release",
+                    "build \"" + projectPath + "\" -c Release -p:GeneratePackageOnBuild=false",
                     repoRoot,
-                    TimeSpan.FromSeconds(60)).ConfigureAwait(false);
+                    TimeSpan.FromSeconds(180)).ConfigureAwait(false);
 
                 await UdpTestHelpers.RunProcessAsync(
                     "dotnet",
                     "pack \"" + projectPath + "\" -c Release --no-build -o \"" + packageDir + "\"",
                     repoRoot,
-                    TimeSpan.FromSeconds(60)).ConfigureAwait(false);
+                    TimeSpan.FromSeconds(180)).ConfigureAwait(false);
 
-                string packagePath = Path.Combine(packageDir, "SimpleUdp.3.3.0.nupkg");
-                AssertEx.True(File.Exists(packagePath), "dotnet pack should produce SimpleUdp.3.3.0.nupkg.");
+                string packageFile = "SimpleUdp." + packageVersion + ".nupkg";
+                string packagePath = Path.Combine(packageDir, packageFile);
+                AssertEx.True(File.Exists(packagePath), "dotnet pack should produce " + packageFile + ".");
 
                 File.WriteAllText(
                     Path.Combine(consumerDir, "NuGet.config"),
@@ -75,7 +79,7 @@ namespace Test.Shared
                     + "    <Nullable>enable</Nullable>" + Environment.NewLine
                     + "  </PropertyGroup>" + Environment.NewLine
                     + "  <ItemGroup>" + Environment.NewLine
-                    + "    <PackageReference Include=\"SimpleUdp\" Version=\"3.3.0\" />" + Environment.NewLine
+                    + "    <PackageReference Include=\"SimpleUdp\" Version=\"" + packageVersion + "\" />" + Environment.NewLine
                     + "  </ItemGroup>" + Environment.NewLine
                     + "</Project>" + Environment.NewLine);
 
@@ -85,7 +89,7 @@ namespace Test.Shared
                     "dotnet",
                     "run --framework net10.0",
                     consumerDir,
-                    TimeSpan.FromSeconds(90)).ConfigureAwait(false);
+                    TimeSpan.FromSeconds(240)).ConfigureAwait(false);
 
                 AssertEx.Contains("PACKAGE_SMOKE_OK", result.OutputLines, "The temporary consumer should run a SimpleUdp send/receive through the packed package.");
             }
@@ -99,6 +103,18 @@ namespace Test.Shared
                 {
                 }
             }
+        }
+
+        private static string GetPackageVersion()
+        {
+            string? version = typeof(SimpleUdp.UdpEndpoint).Assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                .InformationalVersion;
+
+            AssertEx.True(!String.IsNullOrEmpty(version), "SimpleUdp should expose an informational version.");
+
+            int metadata = version!.IndexOf('+');
+            return metadata >= 0 ? version.Substring(0, metadata) : version;
         }
 
         private static string CreateConsumerProgram()

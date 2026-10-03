@@ -2,6 +2,14 @@
 
 ## Current Version
 
+v3.3.1
+
+- Update the `Caching` dependency to `5.1.2`
+- Update test tooling: Touchstone `0.2.0`, NUnit `5.0.0`, NUnit.Analyzers `4.15.0`, NUnit3TestAdapter `6.3.0`, Microsoft.NET.Test.Sdk `18.10.1`, coverlet.collector `10.1.0`
+- Package verification test now derives the expected package version from the built assembly and skips the in-repo package during its build
+- Harden receive-loop-stop telemetry assertions against disposed stops reported asynchronously by earlier test cases
+- No public API changes
+
 v3.3.0
 
 - Add built-in telemetry: a `Meter` and `ActivitySource` named `SimpleUdp` emitting send, receive, handler, receive-loop, endpoint lifecycle, and recent-endpoints cache metrics plus `simpleudp send` / `simpleudp receive` / `simpleudp start` spans with stage children (see `TELEMETRY.md`)

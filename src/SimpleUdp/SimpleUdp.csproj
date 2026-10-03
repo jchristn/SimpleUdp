@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <Version>3.3.0</Version>
+    <Version>3.3.1</Version>
     <OutputType>Library</OutputType>
 	<ApplicationIcon>assets\icon.ico</ApplicationIcon>
     <StartupObject />
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
-    <PackageReleaseNotes>Add built-in OpenTelemetry-compatible metrics and traces via the BCL Meter and ActivitySource named "SimpleUdp". No new dependencies; near-zero cost when unobserved. See TELEMETRY.md.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update the Caching dependency to 5.1.2 and refresh test tooling. No public API changes. Includes built-in OpenTelemetry-compatible metrics and traces (see TELEMETRY.md).</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -41,7 +41,7 @@
       <PackagePath></PackagePath>
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <PackageReference Include="Caching" Version="5.0.1" />
+    <PackageReference Include="Caching" Version="5.1.2" />
     <None Update="assets\icon.ico">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>

@@ -311,7 +311,8 @@ namespace Test.Shared
             Activity stage = capture.Activities("stage:datagram_received").First(a => a.Status == ActivityStatusCode.Error);
             AssertEx.Equal("System.InvalidOperationException", stage.GetTagItem(N.AttrErrorType), "Failed handler stage should carry error.type.");
             AssertEx.True(stage.Events.Any(e => e.Name == "exception"), "Failed handler stage should record an exception event.");
-            AssertEx.Equal(0, capture.Count(N.ReceiveLoopStops), "Handler failures must not stop the receive loop.");
+            // Only error stops are attributable here; endpoints disposed by earlier cases may still report disposed stops asynchronously.
+            AssertEx.Equal(0, capture.Count(N.ReceiveLoopStops, (N.AttrStopReason, N.StopReasonError)), "Handler failures must not stop the receive loop.");
         }
 
         private static async Task ReceiveTruncatedAsync()
@@ -421,7 +422,8 @@ namespace Test.Shared
             endpoint.Dispose();
             await UdpTestHelpers.WithTimeout(stopped.Task, "ServerStopped after dispose").ConfigureAwait(false);
 
-            AssertEx.Equal(1, capture.Count(N.ReceiveLoopStops, (N.AttrStopReason, N.StopReasonDisposed)), "Disposal should record a disposed receive loop stop.");
+            // At least one, since endpoints disposed by earlier cases may still report disposed stops asynchronously.
+            AssertEx.True(capture.Count(N.ReceiveLoopStops, (N.AttrStopReason, N.StopReasonDisposed)) >= 1, "Disposal should record a disposed receive loop stop.");
             AssertEx.Equal(0, capture.Count(N.ReceiveLoopStops, (N.AttrStopReason, N.StopReasonError)), "Disposal should not record an error stop.");
         }
 
