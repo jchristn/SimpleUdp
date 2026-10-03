@@ -1,0 +1,1092 @@
+{
+  "uid": "simpleudp",
+  "title": "SimpleUdp",
+  "tags": [
+    "simpleudp",
+    "udp"
+  ],
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "30s",
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "query": "label_values(simpleudp_build_info, job)",
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "links": [
+    {
+      "title": "Tempo: SimpleUdp errors",
+      "type": "link",
+      "url": "/explore?left={\"datasource\":\"tempo\",\"queries\":[{\"refId\":\"A\",\"queryType\":\"traceql\",\"query\":\"{ name =~ \\\"simpleudp.*\\\" && status = error }\"}]}"
+    }
+  ],
+  "panels": [
+    {
+      "type": "row",
+      "title": "Overview",
+      "id": 1,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "type": "stat",
+      "title": "Active endpoints",
+      "description": "",
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_endpoints_active{job=~\"$job\"})",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Send rate",
+      "description": "",
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_send_datagrams_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Receive rate",
+      "description": "",
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_receive_datagrams_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Send error ratio",
+      "description": "",
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_send_datagrams_total{job=~\"$job\",outcome=\"failure\"}[$__rate_interval])) / clamp_min(sum(rate(simpleudp_send_datagrams_total{job=~\"$job\"}[$__rate_interval])), 1e-9)",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Receive loop faults (1h)",
+      "description": "Endpoints that stopped receiving without being disposed.",
+      "id": 6,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(increase(simpleudp_receive_loop_stops_total{job=~\"$job\",simpleudp_stop_reason=\"error\"}[1h]))",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Handler failures (1h)",
+      "description": "Exceptions thrown by application event handlers (swallowed by SimpleUdp).",
+      "id": 7,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(increase(simpleudp_handler_invocations_total{job=~\"$job\",outcome=\"failure\"}[1h]))",
+          "legendFormat": "__auto"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Send",
+      "id": 8,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Send rate by outcome and mode",
+      "description": "",
+      "id": 9,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (outcome, simpleudp_send_mode) (rate(simpleudp_send_datagrams_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "{{simpleudp_send_mode}} {{outcome}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Send latency",
+      "description": "",
+      "id": 10,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(simpleudp_send_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "p50"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(simpleudp_send_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "p95"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(simpleudp_send_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "p99"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Send stage p95",
+      "description": "queued = waiting for the per-endpoint send slot; transmit = socket write.",
+      "id": 11,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le,stage) (rate(simpleudp_send_stage_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "{{stage}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Send slot: queued vs active",
+      "description": "",
+      "id": 12,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_send_queued{job=~\"$job\"})",
+          "legendFormat": "queued"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_send_active{job=~\"$job\"})",
+          "legendFormat": "active"
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_endpoints_active{job=~\"$job\"})",
+          "legendFormat": "capacity"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Send failures by error.type",
+      "description": "",
+      "id": 13,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (error_type, simpleudp_send_mode) (rate(simpleudp_send_datagrams_total{job=~\"$job\",outcome=\"failure\"}[$__rate_interval]))",
+          "legendFormat": "{{simpleudp_send_mode}} {{error_type}}"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Receive",
+      "id": 14,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Throughput (bytes)",
+      "description": "",
+      "id": 15,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_sent_bytes_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "sent"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_received_bytes_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "received"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Receive processing p95",
+      "description": "The receive loop is serial: slow handlers reduce receive throughput.",
+      "id": 16,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(simpleudp_receive_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "receive p95"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le,simpleudp_event) (rate(simpleudp_handler_duration_seconds_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "{{simpleudp_event}} handler p95"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Datagram size p95",
+      "description": "",
+      "id": 17,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le,network_io_direction) (rate(simpleudp_datagram_size_bytes_bucket{job=~\"$job\"}[$__rate_interval])))",
+          "legendFormat": "{{network_io_direction}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Handler failures by error.type",
+      "description": "",
+      "id": 18,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (simpleudp_event, error_type) (rate(simpleudp_handler_invocations_total{job=~\"$job\",outcome=\"failure\"}[$__rate_interval]))",
+          "legendFormat": "{{simpleudp_event}} {{error_type}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Truncated datagrams",
+      "description": "",
+      "id": 19,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_receive_truncated_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "truncated"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Receive loop stops",
+      "description": "",
+      "id": 20,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (simpleudp_stop_reason, error_type) (increase(simpleudp_receive_loop_stops_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "{{simpleudp_stop_reason}} {{error_type}}"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Endpoints",
+      "id": 21,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Remote endpoints: cached vs capacity",
+      "description": "",
+      "id": 22,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_remote_endpoints_cached{job=~\"$job\"})",
+          "legendFormat": "cached"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(simpleudp_remote_endpoints_capacity{job=~\"$job\"})",
+          "legendFormat": "capacity"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Remote endpoint detection and eviction",
+      "description": "",
+      "id": 23,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_remote_endpoints_detected_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "detected"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(rate(simpleudp_remote_endpoints_evicted_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "evicted"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Endpoint starts by outcome",
+      "description": "",
+      "id": 24,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 10
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (outcome, error_type) (increase(simpleudp_endpoint_starts_total{job=~\"$job\"}[$__rate_interval]))",
+          "legendFormat": "{{outcome}} {{error_type}}"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "title": "Library version",
+      "id": 25,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (job, instance, simpleudp_version) (simpleudp_build_info{job=~\"$job\"})",
+          "format": "table",
+          "instant": true
+        }
+      ]
+    }
+  ]
+}

@@ -77,9 +77,335 @@
             <param name="ip">IP address of the remote endpoint.</param>
             <param name="port">Port of the remote endpoint.</param> 
         </member>
+        <member name="T:SimpleUdp.SimpleUdpTelemetry">
+            <summary>
+            Owns the process-wide SimpleUdp meter and activity source. Every recording method is best-effort:
+            it is a near-zero-cost no-op when nothing is subscribed and never throws into the caller.
+            </summary>
+        </member>
+        <member name="T:SimpleUdp.SimpleUdpTelemetryNames">
+            <summary>
+            Stable names for every meter, activity source, instrument, span, and attribute emitted by SimpleUdp.
+            These strings are a public contract consumed by collectors and dashboards; treat them as API.
+            <para>Subscribe a collector to <see cref="F:SimpleUdp.SimpleUdpTelemetryNames.MeterName"/> and <see cref="F:SimpleUdp.SimpleUdpTelemetryNames.ActivitySourceName"/> to receive the data.</para>
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.MeterName">
+            <summary>
+            Name of the <see cref="T:System.Diagnostics.Metrics.Meter"/> used by SimpleUdp.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ActivitySourceName">
+            <summary>
+            Name of the <see cref="T:System.Diagnostics.ActivitySource"/> used by SimpleUdp.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendDuration">
+            <summary>
+            Histogram (s): end-to-end duration of a send call, including validation, lock wait, and transmit.
+            Labels: simpleudp.send.mode, outcome, error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendDatagrams">
+            <summary>
+            Counter ({datagram}): send calls by outcome.
+            Labels: simpleudp.send.mode, outcome, error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendStageDuration">
+            <summary>
+            Histogram (s): duration of each send stage (queued, transmit).
+            Labels: stage, outcome.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendStageEvents">
+            <summary>
+            Counter ({event}): send stage executions by outcome.
+            Labels: stage, outcome.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendQueued">
+            <summary>
+            UpDownCounter ({send}): sends currently waiting for the per-endpoint send slot.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendActive">
+            <summary>
+            UpDownCounter ({send}): sends currently holding the per-endpoint send slot.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SentBytes">
+            <summary>
+            Counter (By): payload bytes sent successfully.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.DatagramSize">
+            <summary>
+            Histogram (By): datagram payload size.
+            Labels: network.io.direction (transmit, receive).
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ReceiveDatagrams">
+            <summary>
+            Counter ({datagram}): datagrams received.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ReceivedBytes">
+            <summary>
+            Counter (By): payload bytes received and delivered.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ReceiveTruncated">
+            <summary>
+            Counter ({datagram}): received datagrams truncated to MaxDatagramSize.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ReceiveDuration">
+            <summary>
+            Histogram (s): duration of processing one received datagram, including all event handlers.
+            Labels: outcome.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.ReceiveLoopStops">
+            <summary>
+            Counter ({stop}): receive loop terminations.
+            Labels: simpleudp.stop.reason (disposed, error), error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.HandlerDuration">
+            <summary>
+            Histogram (s): duration of each application event handler invocation.
+            Labels: simpleudp.event, outcome, error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.HandlerInvocations">
+            <summary>
+            Counter ({invocation}): application event handler invocations by outcome.
+            Exceptions thrown by handlers are swallowed by SimpleUdp, so this is the only place they are visible.
+            Labels: simpleudp.event, outcome, error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.RemoteEndpointsDetected">
+            <summary>
+            Counter ({endpoint}): new remote endpoints detected.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.RemoteEndpointsCached">
+            <summary>
+            UpDownCounter ({endpoint}): remote endpoints currently held in the recent-endpoints cache, across all local endpoints.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.RemoteEndpointsCapacity">
+            <summary>
+            UpDownCounter ({endpoint}): total capacity of the recent-endpoints caches, across all local endpoints.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.RemoteEndpointsEvicted">
+            <summary>
+            Counter ({endpoint}): remote endpoints evicted from the recent-endpoints cache.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.EndpointsActive">
+            <summary>
+            UpDownCounter ({endpoint}): local UdpEndpoint instances currently bound and not disposed.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.EndpointStarts">
+            <summary>
+            Counter ({endpoint}): local UdpEndpoint construction attempts (socket bind) by outcome.
+            Labels: outcome, error.type.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.BuildInfo">
+            <summary>
+            Gauge ({info}): always 1; carries the library version.
+            Labels: simpleudp.version.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SpanSend">
+            <summary>
+            Client span for one send call.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SpanReceive">
+            <summary>
+            Root consumer span for one received datagram.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SpanStart">
+            <summary>
+            Internal span for endpoint construction (socket bind).
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SpanStagePrefix">
+            <summary>
+            Prefix for stage spans, followed by the stage name, for example "stage:queued".
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrOutcome">
+            <summary>
+            Outcome label: success, failure, or canceled.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrStage">
+            <summary>
+            Stage label.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrErrorType">
+            <summary>
+            Error type label: the fully qualified exception type name.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrSendMode">
+            <summary>
+            Send mode label: sync or async.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrEvent">
+            <summary>
+            Event label: endpoint_detected or datagram_received.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrStopReason">
+            <summary>
+            Receive loop stop reason label: disposed or error.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrVersion">
+            <summary>
+            Library version label.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkIoDirection">
+            <summary>
+            Network I/O direction label: transmit or receive.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkTransport">
+            <summary>
+            Span attribute: transport, always "udp".
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkPeerAddress">
+            <summary>
+            Span attribute: remote peer address.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkPeerPort">
+            <summary>
+            Span attribute: remote peer port.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkLocalAddress">
+            <summary>
+            Span attribute: local address.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNetworkLocalPort">
+            <summary>
+            Span attribute: local port.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrDatagramSize">
+            <summary>
+            Span attribute: datagram payload size in bytes.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrTtl">
+            <summary>
+            Span attribute: IP time-to-live used for a send.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrNewEndpoint">
+            <summary>
+            Span attribute: true when the remote endpoint was seen for the first time.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrTruncated">
+            <summary>
+            Span attribute: true when a received datagram was truncated.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrMaxDatagramSize">
+            <summary>
+            Span attribute: configured maximum datagram size.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.AttrBroadcast">
+            <summary>
+            Span attribute: whether broadcast is enabled on the socket.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.OutcomeSuccess">
+            <summary>
+            Outcome value for successful operations.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.OutcomeFailure">
+            <summary>
+            Outcome value for failed operations.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.OutcomeCanceled">
+            <summary>
+            Outcome value for canceled operations.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.StageQueued">
+            <summary>
+            Send stage: waiting for the per-endpoint send slot.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.StageTransmit">
+            <summary>
+            Send stage: writing the datagram to the socket.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendModeSync">
+            <summary>
+            Send mode value for synchronous sends.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.SendModeAsync">
+            <summary>
+            Send mode value for asynchronous sends.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.EventEndpointDetected">
+            <summary>
+            Event value for the EndpointDetected event.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.EventDatagramReceived">
+            <summary>
+            Event value for the DatagramReceived event.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.StopReasonDisposed">
+            <summary>
+            Stop reason value when the endpoint was disposed.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.StopReasonError">
+            <summary>
+            Stop reason value when the socket faulted.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.DirectionTransmit">
+            <summary>
+            Direction value for outbound datagrams.
+            </summary>
+        </member>
+        <member name="F:SimpleUdp.SimpleUdpTelemetryNames.DirectionReceive">
+            <summary>
+            Direction value for inbound datagrams.
+            </summary>
+        </member>
         <member name="T:SimpleUdp.UdpEndpoint">
             <summary>
             UDP endpoint, both client and server.
+            <para>Emits metrics and traces through the BCL Meter and ActivitySource named in <see cref="T:SimpleUdp.SimpleUdpTelemetryNames"/>; emission is a near-zero-cost no-op when nothing is subscribed.</para>
             </summary>
         </member>
         <member name="E:SimpleUdp.UdpEndpoint.EndpointDetected">

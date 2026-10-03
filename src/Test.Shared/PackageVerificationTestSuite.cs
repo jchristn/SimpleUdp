@@ -51,8 +51,8 @@ namespace Test.Shared
                     repoRoot,
                     TimeSpan.FromSeconds(60)).ConfigureAwait(false);
 
-                string packagePath = Path.Combine(packageDir, "SimpleUdp.3.2.0.nupkg");
-                AssertEx.True(File.Exists(packagePath), "dotnet pack should produce SimpleUdp.3.2.0.nupkg.");
+                string packagePath = Path.Combine(packageDir, "SimpleUdp.3.3.0.nupkg");
+                AssertEx.True(File.Exists(packagePath), "dotnet pack should produce SimpleUdp.3.3.0.nupkg.");
 
                 File.WriteAllText(
                     Path.Combine(consumerDir, "NuGet.config"),
@@ -75,7 +75,7 @@ namespace Test.Shared
                     + "    <Nullable>enable</Nullable>" + Environment.NewLine
                     + "  </PropertyGroup>" + Environment.NewLine
                     + "  <ItemGroup>" + Environment.NewLine
-                    + "    <PackageReference Include=\"SimpleUdp\" Version=\"3.2.0\" />" + Environment.NewLine
+                    + "    <PackageReference Include=\"SimpleUdp\" Version=\"3.3.0\" />" + Environment.NewLine
                     + "  </ItemGroup>" + Environment.NewLine
                     + "</Project>" + Environment.NewLine);
 

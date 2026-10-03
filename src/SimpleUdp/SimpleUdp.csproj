@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <Version>3.2.0</Version>
+    <Version>3.3.0</Version>
     <OutputType>Library</OutputType>
 	<ApplicationIcon>assets\icon.ico</ApplicationIcon>
     <StartupObject />
@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/jchristn/SimpleUdp</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>udp messaging socket message sockets api rpc datagram</PackageTags>
-    <PackageReleaseNotes>Update dependencies (Caching 5.0.1) and test tooling; add synchronous concurrent-send and post-dispose broadcast coverage. No public API changes.</PackageReleaseNotes>
+    <PackageReleaseNotes>Add built-in OpenTelemetry-compatible metrics and traces via the BCL Meter and ActivitySource named "SimpleUdp". No new dependencies; near-zero cost when unobserved. See TELEMETRY.md.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageIconUrl>https://raw.githubusercontent.com/jchristn/SimpleUdp/master/assets/icon.ico</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>

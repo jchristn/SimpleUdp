@@ -65,4 +65,16 @@ namespace Test.Xunit
             await testCase.ExecuteAsync(CancellationToken.None);
         }
     }
+
+    public class TelemetryTests
+    {
+        public static TouchstoneTheoryData Cases => new TouchstoneTheoryData(TelemetryTestSuite.Create());
+
+        [Theory]
+        [MemberData(nameof(Cases))]
+        public async Task Run(TestCaseDescriptor testCase)
+        {
+            await testCase.ExecuteAsync(CancellationToken.None);
+        }
+    }
 }

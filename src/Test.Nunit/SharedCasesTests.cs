@@ -72,4 +72,17 @@ namespace Test.Nunit
             await testCase.ExecuteAsync(CancellationToken.None).ConfigureAwait(false);
         }
     }
+
+    [TestFixture]
+    [NonParallelizable]
+    public class TelemetryTests
+    {
+        public static IEnumerable Cases => new TouchstoneTestCaseSource(new[] { TelemetryTestSuite.Create() });
+
+        [TestCaseSource(nameof(Cases))]
+        public async Task Run(TestCaseDescriptor testCase)
+        {
+            await testCase.ExecuteAsync(CancellationToken.None).ConfigureAwait(false);
+        }
+    }
 }

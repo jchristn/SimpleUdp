@@ -8,6 +8,14 @@
 
 SimpleUdp provides simple methods for creating your own UDP-based sockets application, enabling easy integration of sending data, receiving data, and building state machines.
 
+## New in v3.3.0
+
+- Built-in metrics and traces through the BCL `Meter` and `ActivitySource` named `SimpleUdp` (no new dependencies, near-zero cost when nothing is listening)
+- Covers sends (per-stage `queued`/`transmit` latency, outcomes by `error.type`), receives, event handler latency and swallowed handler exceptions, receive loop stops, endpoint lifecycle, and the recent-endpoints cache
+- Ready-to-provision Grafana dashboard in `assets/grafana/simpleudp.json`
+- Raise the socket send buffer to fit 65507-byte datagrams on platforms with a smaller default (macOS)
+- See [TELEMETRY.md](TELEMETRY.md)
+
 ## New in v3.2.0
 
 - Update the `Caching` dependency to `5.0.1` and refresh the test tooling
@@ -28,6 +36,22 @@ SimpleUdp provides simple methods for creating your own UDP-based sockets applic
 - Retarget to .NET 8.0
 - Removal of `Start`, `Stop` APIs, and, the started event
 - Better multi-platform compatibility (Windows, Mac OSX, Ubuntu)
+
+## Telemetry
+
+SimpleUdp emits OpenTelemetry-compatible metrics and traces through the .NET `Meter` and `ActivitySource` named `SimpleUdp`. Subscribe your collector to that name and the data flows to Prometheus, Tempo, or any OTLP backend:
+
+```csharp
+// Radiant
+settings.Sources.AddMeter("SimpleUdp");
+settings.Sources.AddActivitySource("SimpleUdp");
+
+// OpenTelemetry SDK
+Sdk.CreateMeterProviderBuilder().AddMeter("SimpleUdp")...
+Sdk.CreateTracerProviderBuilder().AddSource("SimpleUdp")...
+```
+
+See [TELEMETRY.md](TELEMETRY.md) for the metric and span catalogs, recommended alerts, and the Grafana dashboard.
 
 ## Help or Feedback
 

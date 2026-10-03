@@ -2,6 +2,15 @@
 
 ## Current Version
 
+v3.3.0
+
+- Add built-in telemetry: a `Meter` and `ActivitySource` named `SimpleUdp` emitting send, receive, handler, receive-loop, endpoint lifecycle, and recent-endpoints cache metrics plus `simpleudp send` / `simpleudp receive` / `simpleudp start` spans with stage children (see `TELEMETRY.md`)
+- Add `SimpleUdpTelemetryNames` with every meter, source, instrument, span, and attribute name as public constants
+- Add a Grafana dashboard at `assets/grafana/simpleudp.json`
+- Raise the socket send buffer to at least 65535 bytes so `MaxDatagramSize` payloads up to 65507 bytes can be sent on macOS (default send buffer 9216)
+- Dispose the socket when the constructor fails to bind
+- No new dependencies
+
 v3.2.0
 
 - Update the `Caching` dependency to `5.0.1` and refresh test tooling (Microsoft.NET.Test.Sdk, coverlet, NUnit, NUnit3TestAdapter, xUnit runner)

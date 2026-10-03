@@ -14,6 +14,7 @@ namespace Test.Shared
                 DatagramTestSuite.Create(),
                 EndpointMetadataTestSuite.Create(),
                 UdpEndpointTestSuite.Create(),
+                TelemetryTestSuite.Create(),
                 PackageVerificationTestSuite.Create()
             };
         }
